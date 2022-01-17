@@ -1,0 +1,74 @@
+:root {
+    --primary: #478ba2;
+    --danger: #de5b6d;
+    --info: #b9d4db;
+    --success: #6dde5b;
+    --warning: #e97658;
+}
+.container20 {
+    padding: 0 25%;
+}
+.form-desc {
+    font-size: 0.75rem;
+    opacity: 0.9;
+}
+.log-h2 {
+    margin: 15px 0;
+}
+.column.basic {
+    padding: 0!important;
+}
+.space-bt {
+    justify-content: space-between;
+}
+.link-li {
+    margin: 15px  0;
+}
+.link-li a {
+    text-decoration: none;
+    color: var(--primary);
+    font-size: 0.75rem;
+    font-weight: 500;
+}
+.pd40{
+    padding: 40px 0;
+}
+/*LEFT SIDE*/
+._title {
+    color: white;
+    margin: 250px 0 20px 0;
+    font-size: 4rem;
+}
+
+.typewriter h1, .typewriter h4 {
+    overflow: hidden; /* Ensures the content is not revealed until the animation */
+    border-right: .15em solid white; /* The typwriter cursor */
+    white-space: nowrap; /* Keeps the content on a single line */
+    margin: 0 auto; /* Gives that scrolling effect as the typing happens */
+    letter-spacing: .10em; /* Adjust as needed */
+    animation: 
+      typing 3.5s steps(40, end),
+      blink-caret .75s step-end infinite;
+  }
+  
+  /* The typing effect */
+  @keyframes typing {
+    from { width: 0 }
+    to { width: 100% }
+  }
+  
+  /* The typewriter cursor effect */
+  @keyframes blink-caret {
+    from, to { border-color: transparent }
+    50% { border-color: white; }
+  }
+  /*#titleBack > div {
+      height: 100%;
+  }*/
+  .homeImg {
+      /*background-image: url("../img/ladiesWorking.jpg");
+      background-size: cover;*/
+  }
+  .card {
+      border: none;
+  }

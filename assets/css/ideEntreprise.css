@@ -1,0 +1,30 @@
+body {
+    background-color: #eee;
+}
+select {
+    padding: 10px 6px;
+    border-radius: 4px;
+    outline: none;
+    width: 300px;
+    border: 1px solid #ccc;
+   
+}
+select:hover {
+    border: 1px solid var(--primderiv);
+    width: 300px;
+}
+.row-align-center {
+    align-items: center;
+}
+a {
+    text-decoration: none;
+    color: var(--primary);
+}
+#addEntr {
+    padding: 6px 14px;
+    border-radius: 2px;
+    font-weight: bold;
+}
+#addEntr:hover {
+    background-color: var(--info);
+}

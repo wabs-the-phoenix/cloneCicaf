@@ -1,0 +1,447 @@
+body{
+    font-family: Roboto, sans-serif;
+}
+.container-content {
+    padding-left: 50px;
+    padding-right: 50px;
+}
+.fz-1o2 {
+    font-size: 1.2rem;
+}
+.fz-o9 {
+    font-size: .9rem;
+}
+.fz-o8 {
+    font-size: .8rem;
+}
+.fz-o7 {
+    font-size: .7rem;
+}
+.fz-o6 {
+    font-size: .6rem;
+}
+.fz-2o5 {
+    font-size: 4rem!important;
+}
+a {
+    text-decoration: none;
+    color: inherit;
+}
+/*
+==========================================================
+========Row gestion======================================
+==========================================================
+*/
+.row {
+    display: flex;
+}
+.shrink {
+    flex-shrink: 1;
+}
+.flex-end {
+    justify-content: flex-end;
+}
+.row-all {
+    width: 100%;
+}
+.half {
+    width: 50%;
+}
+.align-center {
+    align-items: center;
+}
+
+.jst-center {
+    justify-content: center;
+}
+.jst-self-end {
+    justify-self: end;
+}
+/**/
+.size50 {
+    width: 50%;
+}
+.strech {
+    align-items: stretch;
+}
+.grow-1 {
+    flex-grow: 1;
+}
+.space-btw {
+    justify-content: space-between;
+}
+.column {
+    display: flex;
+    flex-direction: column;
+}
+.space-around {
+    justify-content: space-around;;
+}
+/*
+================================================================
+===================Color zone =====================================
+==================================================================*/
+
+
+
+  
+.transparent {
+    border: none;
+    background-color: transparent;
+}
+
+
+/*
+=============================================
+-----------text style------------------------
+==============================================
+*/
+.text-right{
+    text-align: end;
+}
+.title {
+    color: var(--primary);
+    margin: 35px 0;
+    font-size: 2.5rem;
+}
+
+.text-center {
+    text-align: center;
+}
+.content-center {
+    text-align: center;
+}
+.text-lg {
+    font-weight: 300;
+}
+.italique {
+    font-style: italic;
+}
+/*
+=================================================
+==========Message elements=======================
+=================================================
+*/
+
+
+/*
+========================================================
+=================Grid Zone===============================
+=========================================================
+
+*/
+.grid {
+    display: grid;
+}
+.grid-2  {
+    grid-template-columns: 1fr 1fr;
+}
+.grid-3 {
+    grid-template-columns: 1fr 1fr 1fr;
+}
+.grid-4 {
+    grid-template-columns: 1fr 1fr 1fr 1fr;
+}
+.grid-2-s84 {
+    grid-template-columns: 8fr 4fr;
+}
+
+.grid-2-s66 {
+    grid-template-columns:  6fr 6fr;
+}
+.grid-2-c48 {
+    grid-template-columns: 4fr 8fr;
+}
+.grid-2-s75 {
+    grid-template-columns: 7fr 5fr;
+}
+.grid-bord-8 {
+    grid-template-columns: 1fr 3fr 3fr  3fr 3fr 4fr 2fr 2fr;
+}
+.grid-bord-7 {
+    grid-template-columns: 2fr 3fr 3fr 3fr 3fr 3fr 3fr;
+}
+.grid-5 {
+    grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
+}
+.grid-row-2 {
+    grid-template-rows: 1fr 2fr;
+}
+.grid-row-3 {
+    grid-template-rows: 1fr 1fr 1fr 1fr;
+}
+.grid-row-4 {
+    grid-template-rows: 1fr 1fr 1fr 1fr;
+}
+.grid-row-5 {
+    grid-template-rows: 1fr 1fr 1fr 1fr 1fr;
+}
+.gird-row-6 {
+    grid-template-rows: 1fr 1fr 1fr 1fr 1fr 1fr;
+}
+.gird-row-7 {
+    grid-template-rows: 1fr 1fr 1fr 1fr 1fr 1fr 1fr;
+}
+.gird-row-8 {
+    grid-template-rows: 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr;
+}
+.grid-2-S48 {
+    grid-template-columns: 4fr 8fr;
+}
+.grid-2-s212 {
+    grid-template-columns: 2fr 12fr;
+}
+
+.gap20 {
+    gap: 20px
+}
+.grid-gap-40 {
+    gap: 40px;
+}
+.grid-13 {
+    grid-template-columns: 1fr 1fr  1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr;
+}
+.grid-11 {
+    grid-template-columns: 1fr 1fr  1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr;
+}
+.grid-12 {
+    grid-template-columns: 1fr 1fr  1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr;
+}
+.gridHeader {
+    font-weight: bold;
+}
+/*
+-------------------------------------------------------------
+-------------------------------------------------------------
+*/
+
+/*
+======================================================
+========Footer Zone===================================
+======================================================
+*/
+
+
+.footer-foot {
+    margin-top: 10px;
+    padding-top: 10px;
+    padding-bottom: 10px;
+}
+footer a {
+    text-decoration: none;
+    color: inherit;
+}
+.footer-row {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+}
+footer h2 {
+    color: white;
+}
+
+/*===========================================
+==========Link styles =======================
+=============================================*/
+.btn-link {
+    color: white;
+    text-decoration: none;
+    text-align: center;
+    padding: 6px 16px;
+    border-radius: 4px;
+    border: none;
+    outline: none;
+    font-family: inherit;
+}
+.btn-link:hover {
+    background-color: var(--primderiv);
+}
+/*
+===============================================================
+================Positions======================================
+===============================================================
+*/
+.relative {
+    position: relative;
+}
+
+/*
+============================================
+=================Margin zone===================
+=================================================*/
+.marg40 {
+    margin-top: 40px;
+    margin-bottom: 40px;
+}
+.marg20 {
+    margin-top: 20px;
+}
+.mg20 {
+    margin: 35px 0;
+}
+.mar0 {
+    margin: 0;
+}
+
+.mar40 {
+    margin: 60px 0 30px 0;
+}
+.mar-left10 {
+ margin-left: 20px;
+}
+.mar-bottom40 {
+    margin-bottom: 40px;
+}
+.mar-bottom100 {
+    margin-bottom: 100px;
+}
+.mg-r-8 {
+ margin-right: 8px;
+}
+.mg-l-20 {
+    margin-left: 20px;
+}
+.mg-l-30 {
+    margin-left: 30px;
+}
+.mg-r-20 {
+    margin-right: 20px;
+}
+.mg-r-30 {
+    margin-right: 30px;
+}
+.mg-t-10 {
+    margin-top: 10px;
+}
+.mg-t-20 {
+    margin-top: 20px;
+}
+.mg-t-30 {
+    margin-top: 40px;
+}
+.mg-t-40 {
+    margin-top: 40px;
+}
+.mg-b-40 {
+    margin-bottom: 40px;
+}
+.mg-t-80 {
+    margin-top: 80px;
+}
+.mg-b-10 {
+    margin-bottom: 10px;
+}
+.mg-b-20 {
+    margin-bottom: 20px;
+}
+.mg-b-80 {
+    margin-bottom: 80px;
+}
+.mg-r-4 {
+    margin-right: 4px;
+}
+.mg-t-b-30 {
+    margin-top: 30px;
+    margin-bottom: 30px;
+}
+/*
+============================================================
+====================Padding zone===========================
+============================================================
+*/
+.pad60 {
+    padding-top: 60px;
+    padding-bottom: 60px;
+}
+.pad1020 {
+    padding: 20px 40px;
+}
+.pd-10-20 {
+    padding: 10px 20px;
+}
+.pd-8-20 {
+    padding: 8px 20px;
+}
+.pad2010 {
+    padding: 20px 10px;
+}
+.pad50 {
+    padding: 50px;
+}
+.pad510 {
+    padding: 5px 10px;
+}
+.marginBottom50 {
+    margin-bottom: 50px;
+}
+.pad4080 {
+    padding: 80px 60px;
+}
+.pd-l-8 {
+    padding-left: 8px;
+}
+.pd-t-60 {
+    padding-top: 60px;
+}
+.pd-b-80 {
+    padding-bottom: 200px;
+}
+.pd-40 {
+    padding: 40px;
+}
+.pd-t-b-20 {
+    padding-top: 20px;
+    padding-bottom: 20px;
+}
+.pd-t-b-30 {
+    padding-top: 30px;
+    padding-bottom: 30px;
+}
+.pd-t-30 {
+    padding-top: 30px;
+}
+.pd-b-30 {
+    padding-bottom: 30px;
+}
+/**********************************
+***********Tableau*****************
+**********************************/
+
+.header-board {
+    background-color: #ccc;
+
+}
+
+/*tableau*/
+table {
+    
+    border-collapse: collapse;
+}
+thead {
+    background-color: #eee;
+}
+th, td {
+    padding: 10px;
+    border: 1px solid #ccc;
+}
+.table-title {
+    padding: 20px 0;
+    color: var(--primary);
+    border-bottom: 1px solid var(--primary);
+    margin-bottom: 40px;
+}
+button {
+    font-family: Roboto, sans-serif;
+}
+.w40 {
+  width: 100%;  
+}
+.w100 {
+    width: 100%;
+}
+.w50 {
+    width: 50%;
+}
+.color-inherit {
+    color: inherit;
+}

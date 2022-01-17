@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../assets/css/semantic/semantic.min.css">
+    <title>Document</title>
+</head>
+<body>
+    <div id="newUserAction" class="ui buttons">
+        <button  id="add" class="ui labeled icon green button"> <i class="plus icon"></i>Ajouter</button>
+        <button  id="delete" class="ui labeled icon red button"> <i class="trash icon"></i>Supprimer</button>
+    </div>
+    <div class="ui modal add">
+        <i class="close icon"></i>
+        <div class="header">
+            Ajouter utilisateur
+        </div>
+        <div class="ui very padded segment">
+            <form action="" class="ui form">
+                <div class="field">
+                    <label for="">Nom</label>
+                    <input type="text">
+                </div>
+                <div class="field">
+                    <label for="">Nom</label>
+                    <input type="text">
+                </div>
+                <div class="field">
+                    <label for="">Nom</label>
+                    <input type="text">
+                </div>
+            </form>
+        </div>
+        <div class="actions">
+            <button class="ui labeled icon blue button">
+                <i class="plus icon"></i>
+                Ajouter
+            </button>
+            <button class="ui  labeled icon red button">
+                <i class="close icon"></i>
+                Annuler
+            </button>
+        </div>
+    </div>
+    <div class="ui modal delete">
+        <i class="close icon"></i>
+        <div class="header">Message de confirmation</div>
+        <div class="content">
+            <div class="basic segment">
+                Voulez-vous supprimer?
+            </div>
+        </div>
+        <div class="actions">
+            <button class="ui labeled icon blue button">
+                <i class="plus icon"></i>
+                Confirmer
+            </button>
+            <button class="ui  labeled icon red button">
+                <i class="close icon"></i>
+                Annuler
+            </button>
+        </div>
+    </div>    
+
+    <script src="../assets/js/jquery-3.6.0.js"></script>
+    <script src="../assets//css/semantic/semantic.min.js"></script>
+    <script>
+        const addBtn = document.querySelector('#add');
+        const deleteBtn = document.querySelector(`#delete`);
+        addBtn.addEventListener('click', (e) => {
+            $(`.modal.add`).modal('show');
+            
+        })
+        deleteBtn.addEventListener('click', (e) => {
+            $(`.modal.delete`).modal('show');
+        })
+    </script>
+</body>
+</html>

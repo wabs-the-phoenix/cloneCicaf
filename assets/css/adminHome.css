@@ -1,0 +1,63 @@
+
+
+.all {
+    width: 100%;
+    background-color: #eee;
+}
+.gridEl {
+    display: inline-block;
+    text-decoration: none;
+    color: inherit;
+    background-color: white;
+    padding: 30px 20px;
+    width: 100%;
+    min-width: 280px;
+    transition: transform .3s, box-shadow .3s;
+}
+.gridEl:hover {
+    transform: scale(1.02);
+    box-shadow: 0 0 6px 6px #ddd;
+}
+.description-light {
+    font-size: .9rem;
+    opacity: 0.8;
+    text-align: justify;
+    max-width: 180px;
+    min-width: 120px;
+}
+.maincontent {
+    padding: 100px 0;
+}
+.gridEl h2 {
+    font-size: 1rem;
+    color: var(--primary);
+    margin: 10px 0;
+}
+@media screen and (max-width : 500px){
+    
+    .nav-home-link {
+        display: none;
+    }
+}
+@media screen and (max-height : 640px){
+    .toBottom {
+        position: static;
+    }
+    .all {
+        width: 100%;
+        background-color: #eee;
+    }
+}
+@media screen and (min-height : 1000px) and (max-width : 1300px) {
+    
+    .all {
+        width: 100%;
+        background-color: #eee;
+        height: 100%;
+    }
+    .toBottom {
+
+        position: absolute;
+        bottom: 0;
+    }
+}

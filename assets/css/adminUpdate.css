@@ -1,0 +1,104 @@
+:root {
+    --primary: #478ba2;
+    --primderiv: #67b3cc;
+    --danger: #de5b6d;
+    --dangerDeriv: rgba(222,91,109, 0.3);
+    --info: #b9d4db;
+    --success: #6dde5b;
+    --warning: #e97658;
+}
+body {
+    
+    background-color: #eee;
+    color: #555;
+}
+.all {
+    color: #555;
+}
+
+.updateForm {
+    margin: 140px 200px;
+    border-radius: 5px;
+    background-color: white;
+    padding: 40px 80px;
+
+}
+.header-user {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding-bottom: 80px;
+    color: #aaa;
+}
+.profil {
+    text-align: center;
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: var(--primary);
+    margin-bottom: 30px;
+}
+.profil img {
+    width: 45px;
+    height: 45px;
+}
+.description {
+    font-size: 0.7rem;
+    color: #aaa;
+}
+.center-item {
+    align-items: center;
+}
+.form-line {
+    margin-bottom: 25px;
+    border-bottom: 1px solid #ccc;
+    padding-bottom: 8px;
+}
+input[type='text'], input[type='text']:hover, input[type='text']:focus  {
+    color: #555;
+    border: none;
+    outline: none;
+    box-shadow: none;
+    width: 100%;
+}
+
+.itemRight {
+    justify-content: flex-end;
+}
+.itemRight input[type="submit"] {
+    padding: 10px 15px;
+}
+.bg-gray {
+    background-color:  #eee;
+}
+.section-groupe {
+    margin-bottom: 30px;
+}
+.submit {
+    margin-top: 40px;
+}
+.updatePass a {
+    text-decoration: none;
+    font-size: 0.9rem;
+    color: var(--primary);
+}
+.top40 {
+    margin-top: 20px;
+}
+.update {
+    text-decoration: none;
+    font-size: 0.9rem;
+    color: var(--primary);
+}
+.section{
+    margin-bottom: 20px;
+}
+.body form {
+    position: relative;
+}
+input[type="password"] {
+     box-sizing: border-box;
+}

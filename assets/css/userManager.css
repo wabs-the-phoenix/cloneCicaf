@@ -1,0 +1,117 @@
+.bg-white {
+    background-color: white;
+}
+.btn-link {
+    font-size: 0.7rem;
+    position: absolute;
+    top: -6px;
+    right: 0;
+}
+.sideBar ul, li {
+    padding: 0;
+    list-style: none;
+}
+.sideBar a {
+    display: inline-block;
+    width: 100%;
+    padding: 15px 15px;
+}
+.pad1020 {
+    padding: 10px 20px;
+}
+.pad30 {
+    padding: 30px;
+}
+.padLR40 {
+    padding-left: 40px;
+    padding-right: 40px;
+}
+input, select {
+    padding: 10px 6px;
+    border-radius: 4px;
+    outline: none;
+   
+}
+input[type='text'], input[type='password'], input[type='email'],  select {
+    border: 1px solid  #ccc;
+    width: 300px;
+}
+input[type='text']:hover,
+input[type='password']:hover,
+input[type='email']:hover,
+select:hover {
+    border: 1px solid var(--primderiv);
+    width: 300px;
+}
+input[type='text']:focus,
+input[type='password']:focus,
+input[type='email']:focus {
+    border: 1px solid var(--primary);
+    box-shadow: 0px 0px 2px 2px var(--info);
+    width: 300px;
+    
+}
+input[type='submit'] {
+    border: none;
+    background-color: var(--primary);
+    color: white;
+    
+    margin-top: 30px;
+    padding: 10px 20px;
+}
+input[type="submit"]:hover {
+    background-color:  var(--primderiv) ;
+}
+.text-right{
+    text-align: end;
+}
+.btn-link:hover {
+    background-color: var(--info);
+}
+.board-row {
+    padding: 15px 10px;
+}
+
+.entrForm {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 20px 0;
+
+}
+.entrForm input, .entrForm select,
+.entrForm input:hover, .entrForm select:hover,
+.entrForm input:focus, .entrForm select:focus {
+    width: 50%;
+    box-sizing: border-box;
+    font-family: inherit;
+}
+.entrForm label {
+    font-size: 0.75rem;
+    opacity: 0.75;
+    align-self: flex-start;
+    margin-left: 25%;
+    margin-top: 10px;
+}
+.entrForm input {
+    margin: 10px 0;
+}
+.entrForm input[type="date"] {
+    margin: 3px 0;
+}
+.modal input[type = 'submit'] {
+    margin-top: 0;
+}
+.modal input, .modal select {
+    margin-bottom: 30px;
+}
+.sideBar {
+    width: 20%;
+}
+.sideBar a {
+    display: inline-block;
+    width: 100%;
+    border-bottom: 1px solid rgb(110, 94, 94);
+    border-right: 1px solid rgb(110, 94, 94);
+    font-size: 0.9rem;
+}

@@ -1,0 +1,10 @@
+.search-bar {
+    padding: 20px 0;
+}
+.search-bar input {
+    width: 50%;
+}
+
+.header-board {
+    font-weight: bold;
+}

@@ -1,0 +1,11 @@
+#dateNow {
+    padding: 0 8px;
+    color: white;
+}
+.statistique-value {
+    font-size:3rem;
+    font-weight: bold;
+}
+.bold {
+    font-weight: bold;
+}

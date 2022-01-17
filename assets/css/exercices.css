@@ -1,0 +1,20 @@
+
+
+
+.grid-imput input, .grid-imput select {
+    width: auto;
+    padding: 4px;
+    border-radius: 0;
+    width: 100%;
+}
+.board-header {
+    color: white;
+    background-color: #bbb;
+    border: 1px solid #bbb;
+}
+tbody#moves td {
+    padding: 0!important;
+}
+tbody#moves input, tbody#moves select {
+    border: none!important;
+}
