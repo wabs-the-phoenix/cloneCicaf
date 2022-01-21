@@ -1,14 +1,12 @@
 <?php
-use App\Model\User;
+use App\Model\Entreprise;
 $res = "";
-$user = new User();
-
-$cd = new User();
+$entreprise = new Entreprise();
 if(isset($_GET) && count($_GET) > 0 && count($_POST) < 1) {
     if (isset($_GET["action"]) && isset($_GET["id"]) && $_GET["action"] === "delete") {
         try {
             $idTRM = htmlentities(trim($_GET["id"]));
-            $cd->Supprimer($idTRM);
+            $entreprise->Supprimer($idTRM);
         } catch (\Throwable $th) {
             $response = [
                 "type" => "error",
@@ -26,11 +24,11 @@ if(isset($_GET) && count($_GET) > 0 && count($_POST) < 1) {
         echo json_encode($response);
         die();
     }
-    if(count($_GET) == 1 && isset($_GET['id'])) {
+    if(count($_GET) == 1 && $_GET['id']) {
         $id = htmlentities(trim($_GET['id']));
         $singleCD;
         try {
-            $singleCD = $cd->find($id);
+            $singleCD = $entreprise->find($id);
 
         } catch (\Throwable $th) {
             $response = [
@@ -49,43 +47,6 @@ if(isset($_GET) && count($_GET) > 0 && count($_POST) < 1) {
         echo  json_encode($response);
         die();
     }
-    if (isset($_GET["Ids"])) {
-        $ids = $_GET["Ids"];
-        for ($i=0; $i < count($ids) ; $i++) { 
-           $ids[$i] = htmlentities(trim($ids[$i]));
-        }
-        $users = [];
-        try {
-            foreach ($ids as $key => $value) {
-                $users[] = $user->find($value);
-            }
-        } catch (\Throwable $th) {
-            $response = [
-                "type" => "error",
-                "message" => "Problème interne du serveur",
-                "datas" => []
-            ];
-            echo json_encode($response);
-            die();
-        }
-        $userDatas = [];
-        foreach ($users as $key => $value) {
-            $util = [
-                "idUser" => $value->idUser,
-                "nom" => $value->nom,
-                "specialCode" => $value->specialCode
-            ];
-            $userDatas[] = $util;
-            $response = [
-                "type" => "success",
-                "message" => "Okay",
-                "datas" => $userDatas
-            ];
-            echo json_encode($response);
-            die();
-        }
-    
-    }
     $keys = array_keys($_GET);
     $criteres = [];
     for ($i=0; $i < count($keys) ; $i++) {
@@ -95,20 +56,20 @@ if(isset($_GET) && count($_GET) > 0 && count($_POST) < 1) {
    
      try {
          //charger toutes les classes
-         $all = $cd->findBy($criteres);
+         $all = $entreprise->findBy($criteres);
      } catch (\Throwable $th) {
          //dans le cas d'une erreur renvoyer un ojet sous format json
          $response = [
              "type" => "error",
-             "message" => "Probleme du serveur",
-             "datas" => $_GET
+             "message" => "Problème interne du serveur",
+             "datas" => $th
          ];
          echo json_encode($response);
          die();
      }
      $response = [
          "type" => "success",
-         "message" => "critres",
+         "message" => "Okay",
          "datas" => $all
      ];
      echo  json_encode($response);
@@ -123,11 +84,11 @@ elseif(isset($_POST) && count($_POST) > 0) {
             $champs[$keys[$i]] = htmlentities(trim($_POST[$keys[$i]]));
         }
         try {
-            $cd->update($id, $champs);
+            $entreprise->update($id, $champs);
         } catch (\Throwable $th) {
             $response = [
             "type" => "error",
-            "message" => "Mis a jour impossible",
+            "message" => "Problème interne du serveur",
             "datas" => $th
             ];
             echo json_encode($response);
@@ -135,7 +96,7 @@ elseif(isset($_POST) && count($_POST) > 0) {
         }
         $cdUpdated;
         try {
-            $cdUpdated = $cd->find($id);
+            $cdUpdated = $entreprise->find($id);
 
         } catch (\Throwable $th) {
             $response = [
@@ -148,7 +109,7 @@ elseif(isset($_POST) && count($_POST) > 0) {
         }
         $response = [
             "type" => "success",
-            "message" => "L'utilisateur a été modifié avec succès",
+            "message" => "Modification reussie",
             "datas" => $cdUpdated
             ];
             echo  json_encode($response);
@@ -160,7 +121,7 @@ elseif(isset($_POST) && count($_POST) > 0) {
         $champs[$keys[$i]] = htmlentities(trim($_POST[$keys[$i]]));
     }
     try {
-        $cd->Create($champs);
+        $entreprise->Create($champs);
     } catch (\Throwable $th) {
         $response = [
             "type" => "error",
@@ -172,8 +133,8 @@ elseif(isset($_POST) && count($_POST) > 0) {
     }
     $newSC;
     try {
-        $lastId = $cd->findLast();
-        $newSC = $cd->find($lastId->id);
+        $lastId = $entreprise->findLast();
+        $newSC = $entreprise->find($lastId->id);
     } catch (\Throwable $th) {
         $response = [
             "type" => "error",
@@ -194,7 +155,7 @@ elseif(isset($_POST) && count($_POST) > 0) {
  else {
      $all;
      try {
-         $all =  $cd->findAll();
+         $all =  $entreprise->findAll();
          
      } catch (\Throwable $th) {
          $response = [

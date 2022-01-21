@@ -103,12 +103,16 @@
                                                 <td><?php echo  html_entity_decode($value->SNomEntreprise)?></td>
                                                 <td><?php echo html_entity_decode($value->TypeEntreprise)?></td>
                                                 <td><?php
+                                                   
                                                     $arrayAdmin = array_filter($admins, function($k) use ($value) {
-                                                        $k->entrepriseId == $value->idEntreprise;
+                                                        return $k->entrepriseId == $value->idEntreprise;
                                                     });
+                                                   /* echo '<pre>';
+                                                    var_dump($admins[0]->entrepriseId);
+                                                    echo '</pre>';*/
                                                     $ad = NULL;
                                                     if (count($arrayAdmin) > 0) {
-                                                        $ad = $arrayAdmin[0];
+                                                        $ad = array_shift($arrayAdmin);
                                                     }
                                                     if($ad == NULL) {
                                                         echo "";
@@ -119,15 +123,15 @@
                                                 ?></td>
                                                 <td>
 															<div class="hidden-sm hidden-xs action-buttons">
-																<a class="blue editBtn" href="#" id="editlg<?=$value->idEntreprise?>">
-																	<i class="ace-icon fa fa-search-plus bigger-130"></i>
+																<a class="dark blockActiveBtn" href="#" entrepriseid="<?=$value->idEntreprise?>">
+																	<i class="ace-icon fa fa-<?php echo $value->status == 1? "check" : "ban";?> bigger-130"></i>
 																</a>
 
-																<a class="green" href="#">
+																<a class="green editEntrBtn" href="#" entrepriseid="<?=$value->idEntreprise?>">
 																	<i class="ace-icon fa fa-pencil bigger-130"></i>
 																</a>
 
-																<a class="red" href="#">
+																<a class="red deleteEntrBtn" href="#" entrepriseid="<?=$value->idEntreprise?>">
 																	<i class="ace-icon fa fa-trash-o bigger-130"></i>
 																</a>
                                                                 <a class="blue addAdminBtn" href="#" id="addAdminlg<?=$value->idEntreprise?>" data-target="#modalAdmin">
@@ -142,16 +146,16 @@
 																	</button>
 
 																	<ul class="dropdown-menu dropdown-only-icon dropdown-yellow dropdown-menu-right dropdown-caret dropdown-close">
-																		<li>
+																		<!--<li>
 																			<a href="#" class="tooltip-info" data-rel="tooltip" title="View">
 																				<span class="blue">
 																					<i class="ace-icon fa fa-search-plus bigger-120"></i>
 																				</span>
 																			</a>
-																		</li>
+																		</li>-->
 
 																		<li>
-																			<a href="#" class="tooltip-success" data-rel="tooltip" title="Edit">
+																			<a href="#" class="tooltip-success editEntrBtn" data-rel="tooltip" title="Edit" entrepriseid="<?=$value->idEntreprise?>">
 																				<span class="green">
 																					<i class="ace-icon fa fa-pencil-square-o bigger-120"></i>
 																				</span>
@@ -159,7 +163,7 @@
 																		</li>
 
 																		<li>
-																			<a href="#" class="tooltip-error" data-rel="tooltip" title="Delete">
+																			<a href="#" class="tooltip-error deleteEntrBtn" data-rel="tooltip" title="Delete" entrepriseid="<?=$value->idEntreprise?>">
 																				<span class="red">
 																					<i class="ace-icon fa fa-trash-o bigger-120"></i>
 																				</span>
@@ -267,16 +271,71 @@
                                             <h4 class="modal-title" id="addEntrModalLabel">Ajouter Administrateur</h4>
                                         </div>
                                         <div class="modal-body">
-                                            <form>
+                                            <form id="admin-form">
                                                 <div class="form-group">
-                                                    <label for="SCodeEntreprise">Nom</label>
-                                                    <input type="text" name = "SCodeEntreprise" id="SCodeEntreprise" class="form-control">
+                                                    <label for="nom_admin">Nom</label>
+                                                    <input type="text" name = "nom_admin" id="nom_admin" class="form-control">
+                                                </div>
+                                                <div class="form-group">
+                                                    <label for="login_admin">Login</label>
+                                                    <input type="text" name = "login_admin" id="login_admin" class="form-control">
+                                                </div>
+                                                <div class="form-group">
+                                                    <label for="mpd_admin">Mot de passe temporaire</label>
+                                                    <input type="text" name = "mpd_admin" id="mpd_admin" class="form-control">
+                                                </div>
+                                                <div class="form-group">
+                                                    <label for="email_admin">Email</label>
+                                                    <input type="email" name = "email_admin" id="email_admin" class="form-control">
                                                 </div>
                                             </form>
                                         </div>
                                         <div class="modal-footer">
                                             <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                                            <button type="button" class="btn btn-primary" id="submitEntrInfo">Enregistrer</button>
+                                            <button type="button" class="btn btn-primary" id="submitAdminBtn">Enregistrer</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="modal fade" id="modalEntrDelete" tabindex="-1" role="dialog" aria-labelledby="addAdminLabel">
+                                <div class="modal-dialog" role="document">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                                            <h4 class="modal-title" id="addEntrModalLabel">Confirmassion de Suppression</h4>
+                                        </div>
+                                        <div class="modal-body">
+                                            Voulez-vous vraiment supprimer l'entreprise <span id="entrToRemoveName"></span>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-default" data-dismiss="modal">Annuler</button>
+                                            <button type="button" class="btn btn-primary" id="destroyEntrBtn">Confirmer</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="modal fade" id="modalEditEntr" tabindex="-1" role="dialog" aria-labelledby="addAdminLabel">
+                                <div class="modal-dialog" role="document">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                                            <h4 class="modal-title" id="addEntrModalLabel">Mise à jour Entreprise</h4>
+                                        </div>
+                                        <div class="modal-body">
+                                           <form action="" id="editEntrForm">
+                                               <div class="form-group">
+                                                   <label for="SCodeEntreprise_edit">Code de l'entreprise</label>
+                                                   <input type="text" name="SCodeEntreprise_edit" class="form-control">
+                                               </div>
+                                               <div class="form-group">
+                                                   <label for="SNomEntreprise_edit">Nom de l'entreprise</label>
+                                                   <input type="text" name="SNomEntreprise_edit" class="form-control">
+                                               </div>
+                                           </form>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-default" data-dismiss="modal">Annuler</button>
+                                            <button type="button" class="btn btn-primary" id="confirmEntrEditionBtn">Confirmer</button>
                                         </div>
                                     </div>
                                 </div>

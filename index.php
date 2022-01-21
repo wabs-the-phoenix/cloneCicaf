@@ -14,6 +14,7 @@ $router->map('GET', '/Update', 'adminUpdate');
 //Manager
 $router->map('GET', '/manager-home', 'superAdmin/home');
 $router->map('GET', '/manager-entreprises', 'superAdmin/manageEntreprises' );
+$router->map('GET', '/manager-plan-comptable-data', 'superAdmin/planComptableitems' );
 
 $router->map('POST', '/Update', 'adminUpdate');
 $router->map('GET', '/update-pass', 'adminUpdatePass');
@@ -71,6 +72,8 @@ $router->map('GET', '/Agents', 'Personnel/Agents');
 $router->map('GET', '/api/moves', 'Comptabilite/comptaAjax/getMoves' );
 $router->map('GET', '/api/entreprises', 'api/entreprises' );
 $router->map('POST', '/api/entreprises', 'api/entreprises' );
+$router->map('GET', '/api/entrs', 'api/entrs' );
+$router->map('POST', '/api/entrs', 'api/entrs' );
 $router->map('GET', '/api/communes', 'api/communes' );
 $router->map('GET', '/api/journaux', 'api/journaux' );
 $router->map('POST', '/api/journaux', 'api/journaux' );
@@ -89,6 +92,7 @@ $router->map('GET', '/api/familles', 'api/familles' );
 $router->map('POST', '/api/familles', 'api/familles' );
 $router->map('GET', '/api/UserJournal', 'api/UserJournal' );
 $router->map('GET', '/api/users', 'api/users' );
+$router->map('POST', '/api/users', 'api/users' );
 
 $match  = $router->match();
 

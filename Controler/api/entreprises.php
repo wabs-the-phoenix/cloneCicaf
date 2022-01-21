@@ -256,7 +256,6 @@ elseif($_POST && count($_POST) > 0) {
 }
 elseif (isset($_GET['idEntreprise'])) {
     $id = htmlentities(trim($_GET['idEntreprise']));
-    $data;
     try {
         $data = $entreprise->find($id);
     } catch (\Throwable $th) {
@@ -268,10 +267,6 @@ elseif (isset($_GET['idEntreprise'])) {
         echo json_encode($response);
         die();
     }
-    $data->SNomEntreprise  = html_entity_decode($data->SNomEntreprise);
-    $data->RespoEntreprise    = html_entity_decode($data->RespoEntreprise);
-    $data->TypeEntreprise  = html_entity_decode($data->TypeEntreprise);
-    $data->SNomRue  = html_entity_decode($data->SNomRue);
 
     $response = [
         "type" => "success",

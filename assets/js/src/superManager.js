@@ -1,31 +1,5 @@
 (()=> {
     //#region : data functions
-    const getAllEntites = (url) => {
-        getApiDatas(url, (res) => {
-            if (res.type == 'success') {
-                let results = [];
-                let datas = res.datas.entites;
-                if(datas) {
-                    for (let i = 0; i < datas.length; i++) {
-                        const data = datas[i];
-                        const content = {
-                            title: data.SNomEntreprise,
-                            descriptions:data.idEntreprise
-                        }
-                        results.push(content);
-                    }
-                    contentEntite = results;
-                    
-                    $(`.ui.search.entite`).search({
-                        source: contentEntite
-                    })
-                }
-            }
-            else {
-                contentEntite = [];
-            }
-        });
-    }
     const getAllCommunes =  (url) => {
         getApiDatas(url, (res) => {
             if (res.type == 'success') {
@@ -70,19 +44,34 @@
                         console.log(res);
                     }
                     if (res.type == `success`) {
-                        localStorage.serverResponse = JSON.stringify({type: "success", message: "1 Entreprise ajoutée avec succès"})
-                       document.location.reload();
+                        localStorage.serverResponse = JSON.stringify({type: "success", message: res.message})
+                        document.location.reload();
                     }
                     else if(res.type == `error`){
-                        localStorage.serverResponse = JSON.stringify({type: "danger", message: "Echec de l'enregistrement"});
+                        localStorage.serverResponse = JSON.stringify({type: "danger", message: res.message});
+                        document.location.reload();
                     }
                 }
                 else {
-                    localStorage.serverResponse = JSON.stringify({type: "danger", message: "Impossible d'atteindre le serveur"})
+                    localStorage.serverResponse = JSON.stringify({type: "danger", message: res.message})
                 }
             }
         }
         xhr.send(form);
+    }
+    /**
+     * 
+     * @param {Object} res 
+     */
+    const showAlert = (res) => {
+        if (res.type == `success`) {
+            localStorage.serverResponse = JSON.stringify({type: "success", message: res.message})
+            document.location.reload();
+        }
+        else if(res.type == `error`){
+            localStorage.serverResponse = JSON.stringify({type: "danger", message: res.message});
+            document.location.reload();
+        }
     }
     //#endregion
     //#region : listenner
@@ -104,41 +93,6 @@
             }
         }
         
-    }
-    const deleteEntreprise = (e) => {
-        e.preventDefault();
-        let checks = entreprisesList.querySelectorAll(`input[type="checkbox"]`);
-        let checkedItem = [];
-        for (let i = 0; i < checks.length; i++) {
-            const element = checks[i];
-            if (element.checked) {
-                checkedItem.push(element);
-            }
-        }
-        if (checkedItem.length > 0) {
-            entreprisesToDelete = [];
-            for (let i = 0; i < checkedItem.length; i++) {
-                const element = checkedItem[i];
-                let id = element.id;
-                id = id.replace(`entre`, ``);
-                entreprisesToDelete.push(id);
-            }
-            let url = `/api/entreprises?action=delete&entitede=NULL`;
-            for (let j = 0; j < entreprisesToDelete.length; j++) {
-                const id = entreprisesToDelete[j];
-                url += `&Ids[]=${id}`;
-            }
-            getApiDatas(url,(res) => {
-                if (res.type == 'success') {
-                        let modal = $(`.ui.modal.UserMessage`);
-                        let modalEl = document.querySelector(`.ui.modal.UserMessage`);
-                        let type = `success`;
-                        let content = res.message;
-                        showModal(modal, modalEl, type, content);
-                        getEntreprises('/api/entreprises?page=1&entitede=NULL', createTableEntreprise);
-                }
-            });
-        }
     }
     const showEntrepriseDetails = (e) => {
         e.preventDefault();
@@ -246,7 +200,132 @@
         let id = e.currentTarget.id;
         id = id.replace(/\D+/, "");
         id = id.trim();
-        idAdminToAdd = id;
+        entrepriseId = id;
+    }
+    const submitAdmin = (e) => {
+        e.preventDefault();
+        let adminForm = document.querySelector("#admin-form");
+        let inputs = adminForm.querySelectorAll("input");
+        let formData = new FormData();
+        for (let index = 0; index < inputs.length; index++) {
+            const element = inputs[index];
+            let name = element.name;
+            name = name.replace("_admin", "").trim()
+            console.log(name)
+            let value = element.value;
+            value = value.trim();
+            if (value == "") {
+                return;
+                //a completer
+            }
+            if (name !== "mpd" && name !=="email") {
+                if (!isValidSpacedString(value)) {
+                    localStorage.serverResponse = JSON.stringify({type: "danger", message: "Usage de caractère non autorisé. Enregistrement avorté"});
+                    document.location.reload();
+                }
+            }
+            if (name !== "mpd") {
+                motDePasseTempo = value;
+            }
+            formData.append(name, value);
+        }
+        formData.append("role", "admin");
+        formData.append("entrepriseId", entrepriseId);
+        createToDB("/api/users", formData);
+
+    }
+    const askDeleteConfirmation = (e) => {
+        e.preventDefault();
+        let btn = e.currentTarget;
+        let id = btn.getAttribute("entrepriseId");
+        id = id?id.trim() : undefined;
+        if (!id) {
+            return;
+        }
+        idEntreToRemove = id;
+        getApiDatas(`/api/entrs?id=${id}`, (res) => {
+            let nameEntreprise = res.datas.SNomEntreprise;
+            let span = document.querySelector("#entrToRemoveName");
+            if (!span) {
+               return;
+            }
+            span.innerHTML = `<strong>${nameEntreprise}</strong>`;
+            span.className = "blue";
+            $("#modalEntrDelete").modal("show");
+        })
+       
+    }
+    const destroyEntreprise = (e) => {
+        e.preventDefault();
+        getApiDatas(`/api/entrs?id=${idEntreToRemove}&action=delete`, showAlert);
+        //
+    }
+    const editEntreprise = (e) => {
+        e.preventDefault();
+        let btn = e.currentTarget;
+        let id = btn.getAttribute("entrepriseId");
+        id = id?id.trim() : undefined;
+        if (!id) {
+            return;
+        }
+        entrepriseId = id;
+        const editEntrForm = document.querySelector("#editEntrForm");
+        const inputs = editEntrForm.querySelectorAll("input");
+        getApiDatas(`/api/entrs?id=${id}`, (res) => {
+            let nameEntreprise = res.datas.SNomEntreprise;
+            let codeEntreprise = res.datas.SCodeEntreprise;
+            inputs[0].value = codeEntreprise;
+            inputs[1].value = nameEntreprise;
+            $("#modalEditEntr").modal("show");
+        })
+       
+    }
+    const confirmEntrEdition = (e) => {
+        let editEntrForm = document.querySelector("#editEntrForm");
+        let inputs = editEntrForm.querySelectorAll("input");
+        
+        let formData = new FormData();
+        for (let index = 0; index < inputs.length; index++) {
+            const element = inputs[index];
+            let name = element.name;
+            name = name.replace("_edit", "").trim()
+            let value = element.value;
+            value = value.trim();
+            if (value == "") {
+                return;
+                //a completer
+            }
+            formData.append(name, value);
+        }
+        postApiDatas(`/api/entrs?id=${entrepriseId}`, formData, (res) => {
+            showAlert(res);
+        })
+    }
+    const blockActive = (e) => {
+        e.preventDefault();
+        let btn = e.currentTarget;
+        let id = btn.getAttribute("entrepriseId");
+        id = id.trim();
+        getApiDatas(`/api/entrs?id=${id}`, (res) => {
+            let entrFound = res.datas;
+            let status = entrFound.status;
+            status = status == "1" ? "0" : "1";
+            let message = status == "0" ? "L'entreprise a été bloquée avec succès" : "L'entre prise a été déverouillée avec succès";
+            let formData = new FormData();
+            formData.append("status", status );
+            postApiDatas(`/api/entrs?id=${id}`, formData, (res) => {
+                if (res.type == `success`) {
+                    localStorage.serverResponse = JSON.stringify({type: "success", message: message})
+                    document.location.reload();
+                }
+                else if(res.type == `error`){
+                    localStorage.serverResponse = JSON.stringify({type: "danger", message: message});
+                    document.location.reload();
+                }
+            })
+        });
+        
+        
     }
     //#endregion
     //#region : selections
@@ -254,7 +333,16 @@
     const submitEntrInfo = document.querySelector("#submitEntrInfo");
     const addAdminBtns = document.querySelectorAll(".addAdminBtn");
     let contentCommune = [];
-    let idAdminToAdd;
+    let entrepriseId;
+    let submitAdminBtn = document.querySelector("#submitAdminBtn");
+    let motDePasseTempo = "";
+    const deleteEntrBtns = document.querySelectorAll(".deleteEntrBtn");
+    const destroyEntrBtn = document.querySelector("#destroyEntrBtn");
+    const editEntrBtns = document.querySelectorAll(".editEntrBtn");
+    const confirmEntrEditionBtn = document.querySelector("#confirmEntrEditionBtn");
+    const blockActiveBtns = document.querySelectorAll(".blockActiveBtn");
+    let idEntreToRemove;
+    let idEntrepriseToBlock;
     //#endregion
     getAllCommunes('/api/communes');
     if (localStorage.length > 0) {
@@ -274,7 +362,7 @@
                 ${exclam}
             </strong>
 
-            Change a few things up and try submitting again.
+            ${dataStored.message}
             <br />
         </div>
             `
@@ -286,6 +374,21 @@
      for (let index = 0; index < addAdminBtns.length; index++) {
          const element = addAdminBtns[index];
          element.addEventListener("click", addAdmin);
+     }
+     submitAdminBtn.addEventListener("click", submitAdmin);
+     for (let index = 0; index < deleteEntrBtns.length; index++) {
+         const element = deleteEntrBtns[index];
+         element.addEventListener("click", askDeleteConfirmation);
+     }
+     destroyEntrBtn.addEventListener("click", destroyEntreprise);
+     for (let index = 0; index < editEntrBtns.length; index++) {
+         const element = editEntrBtns[index];
+         element.addEventListener("click", editEntreprise);
+     }
+     confirmEntrEditionBtn.addEventListener("click", confirmEntrEdition);
+     for (let index = 0; index < blockActiveBtns.length; index++) {
+         const element = blockActiveBtns[index];
+         element.addEventListener("click", blockActive);
      }
      //#endregion
 })()
