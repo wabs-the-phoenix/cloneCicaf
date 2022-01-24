@@ -7,7 +7,7 @@ class Token {
         $date = new DateTime();
         $key = "qwee4452156QHFKLFJVMLL";
         $now = $date->getTimestamp();
-        $expire = $now + 3600;
+        $expire = $now + 18000;
         $infoString = "$key.$id.$now.$expire.$key";
         $encoded = base64_encode($infoString);
         return $encoded;

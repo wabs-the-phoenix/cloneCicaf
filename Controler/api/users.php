@@ -1,7 +1,9 @@
 <?php
 use App\Model\User;
+use App\Model\UserPermission;
 $res = "";
 $user = new User();
+$userPerm = new UserPermission();
 
 $cd = new User();
 if(isset($_GET) && count($_GET) > 0 && count($_POST) < 1) {
@@ -120,6 +122,10 @@ elseif(isset($_POST) && count($_POST) > 0) {
         $keys = array_keys($_POST);
         $champs = [];
         for ($i=0; $i < count($keys) ; $i++) { 
+            if ($keys[$i] == "mpd") {
+                $champs[$keys[$i]] = sha1(htmlentities(trim($_POST[$keys[$i]])));
+                continue;
+            }
             $champs[$keys[$i]] = htmlentities(trim($_POST[$keys[$i]]));
         }
         try {
@@ -157,10 +163,42 @@ elseif(isset($_POST) && count($_POST) > 0) {
     $keys = array_keys($_POST);
     $champs = [];
     for ($i=0; $i < count($keys) ; $i++) { 
+        if ($keys[$i] == "mpd") {
+            $champs[$keys[$i]] = sha1(htmlentities(trim($_POST[$keys[$i]])));
+            continue;
+        }
         $champs[$keys[$i]] = htmlentities(trim($_POST[$keys[$i]]));
     }
     try {
         $cd->Create($champs);
+        $lastuserId = $cd->findLast();
+        $lastUser = $cd->find($lastuserId->id);
+        switch ($lastUser->role) {
+            case 'admin':
+                $modelUserPerm = [
+                    "adminRead" => 1,
+                    "adminWrite" => 1,
+                    "comptaRead" => 1,
+                    "comptaWrite" => 1,
+                    "budgetRead" => 1,
+                    "budgetWrite" => 1,
+                    "personnelRead"=> 1,
+                    "personnelWrite" => 1,
+                    "amortissementRead" => 1,
+                    "amortissementWrite" => 1,
+                    "entrepriseRead" => 1,
+                    "entrepriseWrite" => 1,
+                    "userId" => $lastuserId->id
+                ];
+                break;
+            
+            default:
+                # code...
+                break;
+        }
+        
+        $userPerm->Create($modelUserPerm);
+
     } catch (\Throwable $th) {
         $response = [
             "type" => "error",

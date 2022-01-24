@@ -9,3 +9,20 @@
 .bold {
     font-weight: bold;
 }
+.inverted.menu {
+    padding: 10px;
+    background-color: #000;
+    color: white;
+}
+.inverted.menu a {
+    margin-right: 15px;
+    color: white;
+    padding: 10px;
+}
+.inverted.menu a:hover {
+    text-decoration: none;
+    background-color: #303030;
+}
+.pad-20 {
+    padding: 20px;
+}

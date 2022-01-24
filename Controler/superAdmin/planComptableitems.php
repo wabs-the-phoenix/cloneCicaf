@@ -87,6 +87,5 @@ $specifiqueLibJs='
 
         $specificScript='
         <script src="assets/js/src/dataFunctions.js"></script>
-        <script src="assets/js/src/aceScript.js"></script>
         <script src="assets/js/src/pcManager.js"></script>';
         require "View/superAdmin/planComptableitems.php";

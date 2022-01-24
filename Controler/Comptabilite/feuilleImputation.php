@@ -2,27 +2,100 @@
 use App\Model\User;
 use App\Model\Entreprise;
 use App\Model\PlanComptable;
+use App\Model\CompteAnalytique;
+use App\Model\Token;
+use App\Model\UserPermission;
+use App\Model\EnteteMouv;
+use App\Model\CorpMouv;
+use App\Model\CategorieJournaux;
 
-$page = "Feuille d'imputation";
-$js = [];
-$js[] = "jquery-3.6.0.js";
-$js[] = "moment.js";
-$js[] = "anime-master/lib/anime.min.js";
-$js[] = "comptes.js";
 
-for ($i=0 ; $i < count($js) ; $i++ ) {
-    $js[$i] = '<script src="assets/js/'.$js[$i].'"></script>';
+$token = $_SESSION['user'];
+$userPerm = new UserPermission();
+$result = Token::verifyToken($token);
+if($result == false || $result == null) {
+    header('Location: /');
+    die();
 }
-$stylePerso = '<link rel="stylesheet" href="vendor/fortawesome/font-awesome/css/fontawesome.css">
-<link rel="stylesheet" href="vendor/fortawesome/font-awesome/css/all.min.css">
-<link rel="stylesheet" href="vendor/fortawesome/font-awesome/css/brands.min.css">
-<link rel="stylesheet" href="vendor/fortawesome/font-awesome/css/regular.min.css">
-<link rel="stylesheet" href="vendor/fortawesome/font-awesome/css/solid.min.css">
-<link rel="stylesheet" href="vendor/fortawesome/font-awesome/css/svg-with-js.min.css">
-<link rel="stylesheet" href="vendor/fortawesome/font-awesome/css/v4-shims.min.css">
-<link rel="stylesheet" href="assets/css/adminHome.css">
-<link rel="stylesheet" href="assets/css/comptaMenu.css">
-<link rel="stylesheet" href="assets/css/adminHome.css">
-<link rel="stylesheet" href="assets/css/comptes.css">';
+$userId = $result["id"];
+$_SESSION['user'] = $result['token'];
+$user = new User();
+$userStd = $user->find($userId);
+$user->hydrated($userStd);
+$userPerm = new UserPermission();
+$perms = $userPerm->findBy(["userId" => $userId]);
+if ($perms !== NULL) {
+    if (count($perms) > 0) {
+        $userPerm->hydrated($perms[0]);
+    }
+    else {
+        header('Location: /');
+    }
+}
+if($userPerm->getComptaWrite() != "1") {
+    header('Location: /');
+    die();
+}
+$entites = [];
+$entreprise = new Entreprise();
+$entrepriseAdmin = $entreprise->find($userStd->entrepriseId);
+if($entrepriseAdmin !== null) {
+    if($entrepriseAdmin->entitede == null) {
+        if ($entrepriseAdmin->status == "0") {
+            die();
+        }
+    }
+    else {
+        $entrepriseMere = $entreprise->find($entrepriseAdmin->entitede);
+        if($entrepriseMere->status == "0") {
+            die();
+        }
+    }
+    
 
+}
+
+$codeAnal = new CompteAnalytique();
+$codes = $codeAnal->findAll();
+$users = $user->findAll();
+$journal = new CategorieJournaux();
+$journaux = $journal->findAll();
+$corpMouv = new CorpMouv();
+$corps = $corpMouv->findAll();
+$header = new EnteteMouv();
+$headers = $header->findAll();
+$entreprises = $entreprise->findAll();
+$specificStyle = '
+<link rel="stylesheet" href="assets/css/jquery-ui.custom.min.css" />
+<link rel="stylesheet" href="assets/css/chosen.min.css" />
+<link rel="stylesheet" href="assets/css/bootstrap-datepicker3.min.css" />
+<link rel="stylesheet" href="assets/css/bootstrap-timepicker.min.css" />
+<link rel="stylesheet" href="assets/css/bootstrap-datetimepicker.min.css" />
+<link rel="stylesheet" href="assets/css/bootstrap-select-country.min.css" />
+<link rel="stylesheet" href="assets/css/jquery.dataTables.min.css" />
+<link rel="stylesheet" href="assets/css/superStyle.css">
+<link rel="stylesheet" href="assets/css/autocompleJs.css">';
+
+$specifiqueLibJs='        		
+        <script src="assets/js/jquery-ui.custom.min.js"></script>
+		<script src="assets/js/jquery.ui.touch-punch.min.js"></script>
+		<script src="assets/js/chosen.jquery.min.js"></script>
+		<script src="assets/js/spinbox.min.js"></script>
+		<script src="assets/js/bootstrap-datepicker.min.js"></script>
+		<script src="assets/js/bootstrap-timepicker.min.js"></script>
+		<script src="assets/js/moment.min.js"></script>
+		<script src="assets/js/autosize.min.js"></script>
+		<script src="assets/js/jquery.inputlimiter.min.js"></script>
+		<script src="assets/js/jquery.maskedinput.min.js"></script>
+		<script src="assets/js/bootstrap-tag.min.js"></script>
+        <script src="assets/js/jquery.dataTables.min.js"></script>
+        <script src="assets/js/jquery.dataTables.bootstrap.min.js"></script>
+        <script src="assets/js/pop.min.js"></script>
+        <script src="assets/js/highcharts.js"></script>
+        <script src="assets/js/jquery-ui-1.9.2.custom.min.js"></script>';
+
+        $specificScript='
+        <script src="assets/js/src/dataFunctions.js"></script>
+        <script src="assets/js/src/aceScript.js"></script>
+        <script src="assets/js/src/codeAnal.js"></script>';
 require "View/Comptabilite/feuilleImputation.php";

@@ -35,30 +35,6 @@
             return true;
         }
         /**
-         * confirmer la creation du compte
-         */
-        const confirmCreation = () => {
-            if(compteAcreer) {
-                let modal = $(`.ui.modal.submitCreation`);
-                let modalEl = document.querySelector(`.ui.modal.submitCreation`)
-                let type = `submit`;
-                let message = `
-                <div class="ui medium header">Voulez créer ce compte?</div>
-                <div class="ui two column grid">
-                    <div class="column">Numéro de Compte:</div>
-                    <div class="column">${compteAcreer.CompteOperation}</div>
-                    <div class="column">Designation</div>
-                    <div class="column">${compteAcreer.desi}</div>
-                    <div class="column">Lettrage</div>
-                    <div class="column">${compteAcreer.lettrage}</div>
-                    <div class="column">Compte Divisionnaire</div>
-                    <div class="column">${compteAcreer.compteDivisio}</div>
-                </div>
-                `;
-                showModal(modal, modalEl, type, message);
-            }
-        }
-        /**
          * Afficher une boite modal
          * @param {jqueryEl} modal 
          * @param {HTMLElement} modalEl 
@@ -91,6 +67,16 @@
             messageContent.innerHTML = content;
             modal.modal(`toggle`);
         }
+        const showAlert = (res) => {
+            if (res.type == `success`) {
+                localStorage.serverResponse = JSON.stringify({type: "success", message: res.message})
+                document.location.reload();
+            }
+            else if(res.type == `error`){
+                localStorage.serverResponse = JSON.stringify({type: "danger", message: res.message});
+                document.location.reload();
+            }
+    }
         /**
          * 
          * @param {jqueryEl} modal 
@@ -195,167 +181,6 @@
             tbody.insertBefore(row, firstChild);
         }
         /**
-         * Ajouter une ligne
-         * @param {object} datas 
-         */
-        const inserLineBeforeClasse = (datas) => {
-            const listesTable = document.querySelector("#allClassesList");
-            const tbody = listesTable.querySelector("tbody");
-            const row = document.createElement("tr");
-            row.id = `classe${datas.idClasse}`;
-            const cellClass = document.createElement("td");
-            cellClass.innerHTML = datas.CodeClasse;
-            const cellDesc = document.createElement("td");
-            cellDesc.innerHTML = datas.Designation;
-            const actionCell = document.createElement("td");
-            actionCell.className = "collapsing";
-            const editBtn = document.createElement("button");
-            editBtn.className = "ui small green icon button";
-            editBtn.innerHTML = `<i class="edit icon"></i>`;
-            //event listenner
-            const deleteBtn = document.createElement("button");
-            deleteBtn.className = "ui small red icon button";
-            deleteBtn.innerHTML = `<i class="trash alternate outline icon"></i>`;
-            deleteBtn.id= `deleteClasse${datas.idClasse}`;
-            deleteBtn.addEventListener("click", deleteClass);
-            actionCell.appendChild(editBtn);
-            actionCell.append("\n");
-            actionCell.appendChild(deleteBtn);
-            row.appendChild(cellClass);
-            row.appendChild(cellDesc);
-            row.appendChild(actionCell);
-            tbody.appendChild(row);
-        }
-        
-        /**
-         * Supprimer une ligne dans le tableau
-         * de classe
-         * @param {*} id 
-         */
-        const removeClassLine = (id) => {
-            const allClassesList = document.querySelector("#allClassesList");
-            let tbody = allClassesList.querySelector("tbody");
-            let searchedId = `classe${id}`;
-            let row = tbody.querySelector(`#${searchedId}`);
-            tbody.removeChild(row);
-        }
-        const inserLineBeforeComptePrincipal = (datas) => {
-
-        }
-        /**
-         * supprimer une ligne
-         * @param {string} id 
-         */
-        const removeLine = (id) => {
-            let line = "line" + id;
-            let row = allCopmtesList.querySelector(`tr#${line}`);
-            let tbody = allCopmtesList.querySelector(`tbody`);
-            tbody.removeChild(row);
-        }
-        /**
-         * recuperer les donnees via une api
-         * @param {string} url 
-         * @param {function} callBack 
-         */
-        const getApiDatas = (url, callBack) => {
-            const xhr = new XMLHttpRequest();
-            xhr.open('GET', url);
-            xhr.onreadystatechange = () => {
-                if (xhr.readyState == 4) {
-                    if (xhr.status == 200) {
-                        let res = xhr.responseText;
-                        try {
-                            res = JSON.parse(res);
-                            
-                        } catch (error) {
-                            showUserMessage("Problème interne du Serveur", "Les données ne peuvent être récupérer depuis la base de donnée")
-                            return;
-                        }
-                        if(res.type === "success") {
-                            if (callBack) {
-                                callBack(res);
-                            }
-                        }
-                        else {
-                            console.log(res.datas)
-                        }
-                        
-                    }
-                }
-            }
-            xhr.send();
-        }
-        /**
-         * envoyer les donnees pour les enregistrer
-         * @param {string} url 
-         * @param {FormData} formData 
-         * @param {function} callBack 
-         */
-        const postApiDatas = (url, formData, callBack) => {
-            const xhr = new XMLHttpRequest();
-            xhr.open('POST', url);
-            xhr.onreadystatechange = () => {
-                if (xhr.readyState == 4) {
-                    if (xhr.status == 200) {
-                        let res = xhr.responseText;
-                        try {
-                            res = JSON.parse(res);
-                            
-                        } catch (error) {
-                            //code to complete
-                           showUserMessage("Opération échouée", `Impossible d'atteindre la base de donnée <i class="red close icon"></i>`);
-                           console.log(res)
-
-                            return;
-                        }
-                        if(res.type == `success`) {
-                            if (callBack) {
-                                callBack(res);
-                            }
-                            return;
-                        }
-                        else {
-                            console.log(res)
-                        }
-                        
-                        
-                    }
-                }
-            }
-            xhr.send(formData);
-        }
-        /**
-         * recuperer toutes les entites
-         * @param {string} url 
-         */
-        const getAllEntities = (url) => {
-            getApiDatas(url, (res) => {
-                if (res.type == 'success') {
-                    let results = [];
-                    let datas = res.datas.entites;
-                    if(datas) {
-                        for (let i = 0; i < datas.length; i++) {
-                            const data = datas[i];
-                            const content = {
-                                title: data.SNomEntreprise,
-                                descriptions:data.idEntreprise,
-                                id: data.idEntreprise
-                            }
-                            results.push(content);
-                        }
-                        contentEntite = results;
-                        
-                        $(`.ui.search.entite`).search({
-                            source: contentEntite
-                        });
-                    }
-                }
-                else {
-                    contentEntite = [];
-                }
-            });
-        }
-        /**
          * efface le contenu des champs permettant de creer 
          * des nouveaux plan comptables
          * apres la creation
@@ -380,12 +205,7 @@
             content.innerHTML = `Voulez-supprimer le compte <span style="font-weight : bold">${pcToRemove.CompteOperation} </span> ${pcToRemove.DesiOperation} ?`;
             $(".ui.modal.submitDestroy").modal("show");
         }
-        //ajouter foctio permettat de redre impossile tout les champs
-        //de type umer d'etrer autre chose que des omres
-        const fillDefaultCompteOperationValue = () => {
-            const ComptePrinci = document.querySelector("#ComptePrinci");
-            ComptePrinci.value = compteAcreer.ComptePrinci;
-        }
+        
         const loadAllPc = () => {
             const xhr = new XMLHttpRequest();
             xhr.open(`GET`, `/api/planComptables`);
@@ -589,20 +409,20 @@
             }
             
             else if (comptePrincipal == undefined) {
-                showAlertAndCloseModal( $(`.ui.modal.compteForm`), `error`, `Compte Principal inexistant! veuillez la créer au préalable`);
+                //showAlertAndCloseModal( $(`.ui.modal.compteForm`), `error`, `Compte Principal inexistant! veuillez la créer au préalable`);
                 return;
                 
             }
             if (sousCompte == undefined) {
-                showAlertAndCloseModal( $(`.ui.modal.compteForm`), `error`, `Sous compte inexistant! veuillez la créer au préalable`);
+                //showAlertAndCloseModal( $(`.ui.modal.compteForm`), `error`, `Sous compte inexistant! veuillez la créer au préalable`);
                 return;
             }
             else if (compteDivisio == undefined) {
-                showAlertAndCloseModal( $(`.ui.modal.compteForm`), `error`, `Compte Divisionnaire inexistant! veuillez la créer au préalable`);
+                //showAlertAndCloseModal( $(`.ui.modal.compteForm`), `error`, `Compte Divisionnaire inexistant! veuillez la créer au préalable`);
                 return;
             }
             else if (compteFamille == undefined) {
-                showAlertAndCloseModal( $(`.ui.modal.compteForm`), `error`, `Compte Famille inexistant! veuillez la créer au préalable`);
+                //showAlertAndCloseModal( $(`.ui.modal.compteForm`), `error`, `Compte Famille inexistant! veuillez la créer au préalable`);
                 return;
             }
             return {
@@ -723,6 +543,7 @@
                 if (element !== link) {
                     if (element.classList.contains(`active`)) {
                         element.classList.remove(`active`)
+                        
                     }
                 }
 
@@ -735,6 +556,12 @@
                     break;
                 case menuPcLink[1]:
                     secondPcPage.style.display = ``;
+                        tableVisible = tableVisible == false ? true : false;
+                        if (tableVisible) {
+                            $(document).ready(function() {
+                                $('#allCopmtesList').DataTable();
+                            } );
+                        }
                     firstPcPage.style.display = `none`;
                     break;
                 default:
@@ -749,109 +576,81 @@
             $(`.ui.modal.newCompteComprincipal`).modal(`toggle`);
         }
         const createCompte = (e) => {
-            let classeToRespect = newCompteData[0].value;
-            classeToRespect = classeToRespect.trim();
+            e.preventDefault();
+            $(`#createNouveauCompteModal`).modal(`hide`);
+            let nouveauCompteForm = document.querySelector("#newCompteForm");
+            let fields = nouveauCompteForm.querySelectorAll("input");
+            let nouveauCompte = fields[0].value;
+            let desiNouveauCompte = fields[1].value;
+            nouveauCompte = nouveauCompte.trim();
+            if (nouveauCompte.search(/^D/) !== -1) {
+                showAlert({type: "danger", message: "Données incorrectes"});
+            }
+            if(nouveauCompte.length < 7) {
+                showAlert({type: "danger", message: "Longueur du compte insuffisante"});
+            }
             
-            let CompteOperation = newCompteData[1].value;
-            
-            const parentOpe = newCompteData[1].parentElement;
-            let desi = newCompteData[2].value;
-            let entiteName = newCompteData[3].value;
-            let entite = contentEntite.find(x => x.title == entiteName);
-            if (entite == undefined) {
-                //afficher un message d'erreur
-                console.log("pas d'entite");
-                return;
+            if (comptePrincipalAcreer !== nouveauCompte.substr(0, 2)) {
+                showAlert({type: "danger", message: "Compte principal incorrecte"});
             }
-            let entiteId = entite.id;
-            CompteOperation = CompteOperation.trim();
-            if (CompteOperation.length < 7) {
-                if (!parentOpe.classList.contains("error")) {
-                    parentOpe.classList.add("error");
-                }
-                return;
-            }
-            let twoFirstCaracters = CompteOperation.substr(0,2);
-            if (twoFirstCaracters !== classeToRespect) {
-                if (!parentOpe.classList.contains("error")) {
-                    parentOpe.classList.add("error");
-                }
-                return;
-            }
-           let pcFound = planComptables.find(x=> x.CompteOperation == CompteOperation);
-           if (pcFound) {
-               if (pcFound.entiteId == entiteId ) {
-                showUserMessage("Conflic lors de la création", "Ce compte existe déjà")
-                   return;
-               }
-           }
-            let compteItems = extractCompteItems(CompteOperation);
-            let typeInput;
-            if (compteItems.classe.CodeClasse == "8") {
-                for (let k = 0; k < newCompteData.length; k++) {
-                    const element = newCompteData[k];
-                    if (element.name == "typeCompte") {
-                        typeInput = element;
+            let NCclasse = nouveauCompte.substr(0, 1);
+            let NCcomptePrincipal = nouveauCompte.substr(0, 2);
+            let NCsousCompte = nouveauCompte.substr(0, 3);
+            let NCcompteDivisionnaire = nouveauCompte.substr(0, 4);
+            let NCfamille = nouveauCompte.substr(0, 6);
+            let famille = familles.find(x => x.CodeCompteFamille == NCfamille);
+            if (!famille) {
+                let DesigantionCompteFamille = desiNouveauCompte;
+                let CodeCompteFamille = NCfamille;
+                let fd = new FormData();
+                fd.append("CodeCompteFamille",CodeCompteFamille);
+                fd.append("DesigantionCompteFamille",DesigantionCompteFamille);
+                postApiDatas("/api/familles", fd, (res) => {
+                    let _form = new FormData();
+                    _form.append("Numclasse", NCclasse);
+                    _form.append("ComptePrinci", NCcomptePrincipal);
+                    _form.append("SousCompte", NCsousCompte);
+                    _form.append("CodeDivision", NCcompteDivisionnaire);
+                    _form.append("CodeFamille", NCfamille);
+                    _form.append("CompteOperation", nouveauCompte);
+                    _form.append("DesiOperation", desiNouveauCompte);
+                    _form.append("entiteId", entrepriseUser.idEntreprise);
+                    _form.append("debit", 0);
+                    _form.append("credit", 0);
+                    if (NCclasse == "1" && NCclasse == "4" && NCclasse == "7") {
+                        _form.append("typeCompte", 1);
                     }
-                }
-                if (!typeInput) {
-                    const myForm = document.querySelector("#newCompteForm");
-                    afficherNewInput(myForm, "typeCompte");
-                    return;
-                }
-                
-            }
-            let typeCompte;
-            if (typeInput) {
-                typeCompte = typeInput.value;
+                    else {
+                        _form.append("typeCompte", 2);
+                    }
+                    postApiDatas("/api/planComptables", _form, (res) => {
+                       showAlert(res);
+                    });
+                    
+                })
             }
             else {
-                typeCompte = findTypeCompte(CompteOperation);
+                let _form = new FormData();
+                    _form.append("Numclasse", NCclasse);
+                    _form.append("ComptePrinci", NCcomptePrincipal);
+                    _form.append("SousCompte", NCsousCompte);
+                    _form.append("CodeDivision", NCcompteDivisionnaire);
+                    _form.append("CodeFamille", NCfamille);
+                    _form.append("CompteOperation", nouveauCompte);
+                    _form.append("DesiOperation", desiNouveauCompte);
+                    _form.append("entiteId", entrepriseUser.idEntreprise);
+                    _form.append("debit", 0);
+                    _form.append("credit", 0);
+                    if (NCclasse == "1" && NCclasse == "4" && NCclasse == "7") {
+                        _form.append("typeCompte", 1);
+                    }
+                    else {
+                        _form.append("typeCompte", 2);
+                    }
+                    postApiDatas("/api/planComptables", _form, (res) => {
+                       showAlert(res);
+                    });
             }
-            if (compteItems == undefined) {
-                return;
-            }
-            //To Do verifier omre de caractere @CompteOperation
-            //TO DO completer les rags maquqt pqr des zero @CompteOperation
-            //TO DO proteger le champ desi
-            let formData = new FormData();
-            formData.append(`CompteOperation`, CompteOperation )
-            formData.append(`DesiOperation`, desi);
-            formData.append(`typeCompte`, typeCompte);
-            let lettrage = ``;
-            formData.append(`Lettrage4`, lettrage);
-            formData.append('entiteId', entiteId);
-            
-            //create lettrageFunction
-            formData.append(`Numclasse`, compteItems.classe.CodeClasse);
-            formData.append(`DesiClassel`, compteItems.classe.Designation);
-            formData.append(`ComptePrinci`, compteItems.comptePrincipal.CodeComptePrincipal );
-            formData.append(`DesiComptePrinci`, compteItems.comptePrincipal.DesignationCompte );
-            formData.append(`SousCompte`, compteItems.sousCompte.CodeSousCompte );
-            formData.append(`DesiSousCompte`, compteItems.sousCompte.Designation );
-            formData.append(`CodeDivision`, compteItems.compteDivisio.CodeCompteDivisionnaire );
-            formData.append(`DesiDivision`, compteItems.compteDivisio.DesigantionCD);
-            formData.append(`CodeFamille`, compteItems.compteFamille.CodeCompteFamille  );
-            formData.append(`DesiFamille`, compteItems.compteFamille.DesigantionCompteFamille);
-            formData.append(`debit`, 0);
-            formData.append(`credit`, 0);
-              
-            compteAcreer = {
-                CompteOperation,
-                desi,
-                typeCompte,
-                lettrage,
-                classe : compteItems.classe.CodeClasse,
-                comptePrincipal : compteItems.comptePrincipal.CodeComptePrincipal,
-                sousCompte : compteItems.sousCompte.CodeSousCompte,
-                compteDivisio : compteItems.compteDivisio.CodeCompteDivisionnaire,
-                compteFamille : compteItems.compteFamille.CodeCompteFamille
-            }
-            formDataToCreateCompte = formData;
-            if (parentOpe.classList.contains("error")) {
-                parentOpe.classList.remove("error");
-            }
-            confirmCreation();
             
         }
         const closeSelfModal = (e) => {
@@ -923,15 +722,12 @@
         const destroyToDB = (e) => {
             e.preventDefault();
             getApiDatas(`/api/planComptables?action=delete&id=${pcIdToRemove}`, (res) => {
-                showMessageDiv()
-                loadAllPc();
-                removeLine(res.datas);
+                showAlert(res);
             })
 
         }
         const valideNewCompteCP = (e) => {
             e.preventDefault();
-            
             let input = document.querySelector("#newCompteCPNumber");
             const contentNewComptePc = document.querySelector("#contentNewComptePc");
             const form = contentNewComptePc.querySelector(".ui.form");
@@ -940,6 +736,7 @@
              if (isCorrect(value, isTwoCharNumber)) {
                 compteAcreer = {};
                 compteAcreer.ComptePrinci = value;
+                comptePrincipalAcreer = value;
                 if (contentNewComptePc.firstElementChild !== form) {
                     contentNewComptePc.removeChild(contentNewComptePc.firstElementChild);
                     if(field.classList.contains("error")) {
@@ -947,21 +744,10 @@
                         input.value = '';
                     }
                 }
-                fillDefaultCompteOperationValue();
                 $(`.ui.modal.compteForm`).modal(`toggle`);
              }
              else {
-                 let errorDiv = document.createElement("div");
-                 errorDiv.className = "ui error message";
-                 errorDiv.innerHTML = "Les données entrées sont incorrectes";
-                 for (let index = 0; index < contentNewComptePc.children.length; index++) {
-                     const element = contentNewComptePc.children[index];
-                     if (element.className === errorDiv.className) {
-                         return;
-                     }
-                 }
-                 contentNewComptePc.insertBefore(errorDiv, form);
-                 field.classList.add("error")
+                $(`.ui.modal.compteForm`).modal(`toggle`);
              }
         }
         /**
@@ -981,59 +767,6 @@
          * Ajouter les contraintes de verifications de caracteres
          */
         //#region : class Manager
-            /**
-             * Apparaitre le formulaire d'ajout d'une classe
-             * @param {clickEvent} e 
-             */
-            const addNewClass = (e) => {
-                $(".ui.modal.newClass").modal("show");
-            }
-            /**
-             * Creation d'une classe dans la base de donnee
-             * @param {clickEvent} e 
-             */
-            const createClass = (e) => {
-                e.preventDefault();
-                const newClassForm = document.querySelector("#newClassForm");
-                let inputs = newClassForm.querySelectorAll("input");
-                let first = inputs[0];
-                let content = first.value;
-                content = content.trim();
-                //verifier les caracteres
-                let theClasse = classes.find(x => x.CodeClasse == content);
-                if (!theClasse) {
-                    let data = new FormData();
-                    for (let i = 0; i < inputs.length; i++) {
-                        const element = inputs[i];
-                        let value = element.value;
-                        //code de verification
-                        value = value.trim();
-                        let name = element.name;
-                        name = name.trim();
-                        name = name.replace("_classe", "");
-                        data.append(name, value);
-                    }
-                    postApiDatas("/api/classes", data, (res) => {
-                        $(".ui.modal.newClass").modal("hide");
-                        if (res.type == "success") {
-                            showMessageDiv(document.querySelector("#classeMessage"), `<i class="green check icon "></i>` + res.message, "success");
-                        let  lastClasse = res.datas[0];
-                        inserLineBeforeClasse(lastClasse);
-                            
-                        }
-                        else {
-
-                        }
-                        //showUserMessage("Opération réussie", res.message);
-                        console.log()
-                        loaAllClasses();
-                    });
-                }
-                else {
-                    showUserMessage("Opération avortée", `La classe que vous tentez de créer existe déjà <i class="red close icon"></i>`)
-                }
-                
-            }
             /**
              * Ouvrir le formulaire de modifications
              * @param {*} e 
@@ -1055,49 +788,6 @@
                
             }
             /**
-             * enregistrer les modifications
-             * @param {*} e 
-             * @returns 
-             */
-            const saveClassEdition = (e) => {
-                e.preventDefault();
-                let editClasseForm = document.querySelector("#editClasseForm");
-                let inputs = editClasseForm.querySelectorAll("input");
-                const editFormData = new FormData();
-                let codeClasse = inputs[0].value;
-                codeClasse = codeClasse.trim();
-                isAllCorrect = codeClasse.search(/\D/);
-                if(isAllCorrect > -1) {
-                    showUserMessage(`Usage de caractère(s) non-autorisé(s) <i class="red warning icon"></i>`, `Vous utilisez des caractères non permis pour ce type de données <i class="red close icon"></i>`);
-                    return;
-                }
-                let desi = inputs[1].value;
-                desi = desi.trim();
-                let isDesiCorrect = desi.search(/[^\w\s]/);
-                if(isDesiCorrect > -1) {
-                    showUserMessage(`Usage de caractère(s) non-autorisé(s) <i class="red warning icon"></i>`, `Vous utilisez des caractères non permis pour ce type de données <i class="red close icon"></i>`);
-                    return;
-                }
-                if(codeClasse == "" || desi == "") {
-                    showUserMessage(`Usage de caractère(s) non-autorisé(s) <i class="red warning icon"></i>`, `Vous ne devez pas entrer des champs vides <i class="red close icon"></i>`);
-                    return;
-                }
-                editFormData.append("CodeClasse", codeClasse);
-                editFormData.append("Designation", desi);
-                postApiDatas(`/api/classes?id=${idClasseToEdit}`, editFormData, (res) => {
-                    const tab = document.querySelector("#allClassesList");
-                    const row = tab.querySelector(`#classe${idClasseToEdit}`);
-                    let datas = res.datas;
-                    let codeCell = row.firstElementChild;
-                    codeCell.innerHTML = datas.CodeClasse;
-                    let DesiCell = codeCell.nextElementSibling;
-                    DesiCell.innerHTML = datas.Designation;
-                    $(".ui.modal.editClassModal").modal("hide");
-                    showMessageDiv(document.querySelector("#classeMessage"), `<i class="green check icon "></i>` + res.message, "success");
-                })
-
-            }
-            /**
              * supprimer une classe
              * @param {clickEvent} e 
              */
@@ -1107,19 +797,6 @@
                 idClasseToRemove = e.currentTarget.id;
                 idClasseToRemove = idClasseToRemove.replace("deleteClasse", "");
                 idClasseToRemove = idClasseToRemove.trim();
-            }
-             /**
-             * 
-             * @param {clickEvent} e 
-             */
-            const destroyClass = (e) => {
-                e.preventDefault();
-                getApiDatas(`/api/classes?action=delete&id=${idClasseToRemove}`, (res) => {
-                    showMessageDiv(document.querySelector("#classeMessage"), `<i class="green check icon "></i>` + res.message, "success");
-                    loaAllClasses();
-                    loadAllPc();
-                    removeClassLine(res.datas);
-                })
             }
         //#endregion
 
@@ -1689,13 +1366,6 @@
         const desiOp = document.querySelector("#DesiOperation");
         const deletePcBtns = document.querySelectorAll(".deleteBtn");
         const confirmDestroy = document.querySelector("#confirmDestroy");
-        const addNewClassBtn = document.querySelector("#addNewClassBtn");
-        const createClassBtn = document.querySelector("#createClassBtn");
-        const addNewComptePrincipalBtn = document.querySelector("#addNewComptePrincipalBtn");
-        const createComptePrinciBtn = document.querySelector("#createComptePrinciBtn");
-        const addNewSousCompteBtn = document.querySelector("#addNewSousCompteBtn");
-        const addNewCompteDivisioBtn = document.querySelector("#addNewCompteDivisioBtn");
-        const createCompteDivisioBtn = document.querySelector("#createCompteDivisioBtn");
         const addNewCompteFamilleBtn = document.querySelector("#addNewCompteFamilleBtn");
         const createCompteFamilleBtn = document.querySelector("#createCompteFamilleBtn");
         const createSousCompteBtn = document.querySelector("#createSousCompteBtn");
@@ -1716,6 +1386,7 @@
         const saveSCEditionBtn = document.querySelector("#saveSCEditionBtn");
         const deleteSCBtns = document.querySelectorAll(".deleteSCBtn");
         const destroySCBtn = document.querySelector("#destroySCBtn");
+        let comptePrincipalAcreer;
         /**
         * comptes divisionnaires buttons
          */
@@ -1741,24 +1412,13 @@
         let idSCToRemove;
         let idCDToRemove;
         let idFamilleToRemove;
+        let entiteUser;
+        let entrepriseUser;
         //les donnees du plan comptable sur lequelle on se trouve
         let pcActuel;
         let sens = true;
-        $(document).ready(function() {
-            $('#allCopmtesList').DataTable();
-        } );
-        $(document).ready(function() {
-            $('#allClassesList').DataTable();
-        } );
-        $(document).ready(function() {
-            $('#allComptePrincipalList').DataTable();
-        } );
-        $(document).ready(function() {
-            $('#allSousCompteList').DataTable();
-        } );
-        $(document).ready(function() {
-            $('#allCompteDivList').DataTable();
-        } );
+        let tableVisible = false;
+        
         $(document).ready(function() {
             $('#allFamilleList').DataTable();
         } );
@@ -1775,15 +1435,9 @@
                 .transition('fade')
               ;
             });
-        const serverPesponses = document.querySelectorAll(".serverResponse");
-        for (let i = 0; i < serverPesponses.length; i++) {
-            const element = serverPesponses[i];
-            if (!element.classList.contains("hidden")) {
-                element.classList.add("hidden");
-            }
-        }       
+         
        //#endregion
-
+        let utilisateur;
        //#region: load all plan comptable
             loadAllPc();
             loaAllClasses();
@@ -1791,7 +1445,35 @@
             loadAllSousCompte();
             loadAllCompteDivision();
             loadAllFamille();
-            getAllEntities('/api/entreprises');
+            getApiDatas("/api/userSession", (res) => {
+                utilisateur = res.datas.user;
+                entrepriseUser = res.datas.entreprise;
+            })
+            if (localStorage.length > 0) {
+                if(localStorage.serverResponse) {
+                    let userMessage = document.querySelector("#userMessage");
+                    let dataStored = JSON.parse(localStorage.serverResponse);
+                    let ico = dataStored.type == "success" ? `check`: `times`;
+                    let exclam = dataStored.type == "success" ? `Félicitations!`: `Oups!`;
+                    userMessage.innerHTML = `
+                    <div class="alert alert-${dataStored.type}">
+                    <button type="button" class="close" data-dismiss="alert">
+                        <i class="ace-icon fa fa-times"></i>
+                    </button>
+        
+                    <strong>
+                        <i class="ace-icon fa fa-${ico}"></i>
+                        ${exclam}
+                    </strong>
+        
+                    ${dataStored.message}
+                    <br />
+                </div>
+                    `
+                    Reflect.deleteProperty(localStorage, "serverResponse");
+                }
+            }
+            //getAllEntities('/api/entreprises');
             
        //#endregion
 
@@ -1818,16 +1500,6 @@
             element.addEventListener("click", deletePc)
         }
         confirmDestroy.addEventListener("click", destroyToDB);
-        addNewClassBtn.addEventListener("click", addNewClass);
-        createClassBtn.addEventListener("click", createClass);
-        addNewComptePrincipalBtn.addEventListener("click", addNewComptePrincipal);
-        addNewSousCompteBtn.addEventListener("click", addNewSousCompte);
-        addNewCompteDivisioBtn.addEventListener("click", addNewCompteDivisio);
-        addNewCompteFamilleBtn.addEventListener("click", addNewCompteFamille);
-        createComptePrinciBtn.addEventListener("click", createComptePrincipal);
-        createSousCompteBtn.addEventListener("click", createSousCompte);
-        createCompteDivisioBtn.addEventListener("click", createCompteDivisionnaire);
-        createCompteFamilleBtn.addEventListener("click", createCompteFamille)
         for (let index = 0; index < deleteClasseBtns.length; index++) {
             const element = deleteClasseBtns[index];
             element.addEventListener("click", deleteClass);
@@ -1836,41 +1508,10 @@
             const element = editClasseBtns[index];
             element.addEventListener("click", editClass);
         }
-        destroyClassBtn.addEventListener("click", destroyClass);
-        saveClassEditionBtn.addEventListener("click", saveClassEdition );
-        /**
-         * Ajouter les listenner aux boutons de suppression
-         */
-        for (let index = 0; index < deleteCPBtns.length; index++) {
-            const element = deleteCPBtns[index];
-            element.addEventListener("click", deleteComptePrincipal);
-        }
-        destroyCompptePrinciBtn.addEventListener("click", destroyComptePrincipal);
-        for (let index = 0; index < editCPBtns.length; index++) {
-            const element = editCPBtns[index];
-            element.addEventListener("click", editComptePrincipal);
-        }
-        saveCPEditionBtn.addEventListener("click", saveComptePrinciEdition);
-        for (let index = 0; index < editSCBtns.length; index++) {
-            const element = editSCBtns[index];
-            element.addEventListener("click", editSousCompte);
-        }
-        saveSCEditionBtn.addEventListener("click", saveSCEdition);
-        for (let index = 0; index < deleteSCBtns.length; index++) {
-            const element = deleteSCBtns[index];
-            element.addEventListener("click", deleteSousCompte);
-        }
-        destroySCBtn.addEventListener("click", destroySousCompte);
-        for (let index = 0; index < deleteCDBtns.length; index++) {
-            const element = deleteCDBtns[index];
-            element.addEventListener("click", deleteCompteDivisionnaire);
-        }
-        destroyCDBtn.addEventListener("click", destroyCompteDivisionnaire);
         for (let index = 0; index < deleteFamilleBtns.length; index++) {
             const element = deleteFamilleBtns[index];
             element.addEventListener("click", deleteFamille);
         }
-        destroyFamilleBtn.addEventListener("click", destroyFamille);
        //#endregion
     }
 )()

@@ -74,6 +74,57 @@ foreach ($codesStd as $key => $value) {
 
 if ($userPerm->getComptaWrite() == "1") {
     require "View/Comptabilite/exercices.php";
+    $specificStyle = '
+        <link rel="stylesheet" href="assets/css/jquery-ui.custom.min.css" />
+        <link rel="stylesheet" href="assets/css/chosen.min.css" />
+        <link rel="stylesheet" href="assets/css/bootstrap-datepicker3.min.css" />
+        <link rel="stylesheet" href="assets/css/bootstrap-timepicker.min.css" />
+        <link rel="stylesheet" href="assets/css/bootstrap-datetimepicker.min.css" />
+        <link rel="stylesheet" href="assets/css/bootstrap-select-country.min.css" />
+        <link rel="stylesheet" href="assets/css/jquery.dataTables.min.css" />
+        <link rel="stylesheet" href="assets/css/semantic/semantic.min.css" />
+        <link rel="stylesheet" href="assets/css/superStyle.css">
+        <link rel="stylesheet" href="assets/css/autocompleJs.css">
+        <link rel="stylesheet" href="vendor/fortawesome/font-awesome/css/fontawesome.css">
+        <link rel="stylesheet" href="vendor/fortawesome/font-awesome/css/all.min.css">
+        <link rel="stylesheet" href="vendor/fortawesome/font-awesome/css/brands.min.css">
+        <link rel="stylesheet" href="vendor/fortawesome/font-awesome/css/regular.min.css">
+        <link rel="stylesheet" href="vendor/fortawesome/font-awesome/css/solid.min.css">
+        <link rel="stylesheet" href="vendor/fortawesome/font-awesome/css/svg-with-js.min.css">
+        <link rel="stylesheet" href="vendor/fortawesome/font-awesome/css/v4-shims.min.css">
+        <link rel="stylesheet" href="assets/css/adminHome.css">
+        <link rel="stylesheet" href="assets/css/semantic/semantic.min.css">
+        <link rel="stylesheet" href="assets/css/semantic/dataTable.semantic.min.css">
+        <link rel="stylesheet" href="assets/css/slick.css">
+        <link rel="stylesheet" href="assets/css/slick-theme.css">
+        <link rel="stylesheet" href="assets/css/planComptable.css">
+        <link rel="stylesheet" href="assets/css/comptaMenu.css">
+        <link rel="stylesheet" href="assets/css/exercices.css">';
+    $specifiqueLibJs='        		
+        <script src="assets/js/jquery-ui.custom.min.js"></script>
+		<script src="assets/js/jquery.ui.touch-punch.min.js"></script>
+		<script src="assets/js/chosen.jquery.min.js"></script>
+		<script src="assets/js/spinbox.min.js"></script>
+		<script src="assets/js/bootstrap-datepicker.min.js"></script>
+		<script src="assets/js/bootstrap-timepicker.min.js"></script>
+		<script src="assets/js/moment.min.js"></script>
+		<script src="assets/js/autosize.min.js"></script>
+		<script src="assets/js/jquery.inputlimiter.min.js"></script>
+		<script src="assets/js/jquery.maskedinput.min.js"></script>
+		<script src="assets/js/bootstrap-tag.min.js"></script>
+        <script src="assets/js/jquery.dataTables.min.js"></script>
+        <script src="assets/js/jquery.dataTables.bootstrap.min.js"></script>
+        <script src="assets/js/pop.min.js"></script>
+        <script src="assets/js/highcharts.js"></script>
+        <script src="assets/js/jquery-ui-1.9.2.custom.min.js"></script>
+        <script src="assets/js/autoComplete.js"></script>';
+
+        $specificScript='
+        <script src="assets/js/src/dataFunctions.js"></script>
+        <script src="assets/js/src/aceScript.js"></script>
+        <script src="assets/css/semantic/semantic.min.js/aceScript.js"></script>
+        <script src="assets/js/src/exercice.js"></script>';
+        
 }
 
 else {

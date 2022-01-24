@@ -17,7 +17,7 @@ const wab$ = (
             }
             const onFocus = (e) => {
                 const champ = e.currentTarget;
-                const path = "/" + url.replace("file", "")+`?limit=5&value=${champ.value}`;
+                const path = "/api/" + url.replace("file", "")+`?limit=5&value=${champ.value}`;
                 let theParent = champ.parentElement;
                 champ.parentElement.style.position = "relative";
                 champ.style.position = "relative";
@@ -54,7 +54,6 @@ const wab$ = (
                 xhr.onreadystatechange = () => {
                     if(xhr.readyState == 4) {
                        if( xhr.status == 200) {
-                        
                            let res = JSON.parse(xhr.responseText);
                            
                            if(res.status == "200") {

@@ -222,8 +222,8 @@
                                                 <input type="text" name="SNomRue" id="SNomRue" class="form-control">
                                             </div>
                                             <div class="form-group">
-                                                <label for="communeEntr">Commune</label>
-                                                <input type="text" id="communeEntr" name="communeEntr" class="form-control">
+                                                <label for="commune_idCommune">Commune</label>
+                                                <input type="text" id="communeEntr" name="commune_idCommune" class="form-control">
                                             </div>
                                             <div class="form-group">
                                                 <label for="">Numero de Téléphone</label>
@@ -282,7 +282,7 @@
                                                 </div>
                                                 <div class="form-group">
                                                     <label for="mpd_admin">Mot de passe temporaire</label>
-                                                    <input type="text" name = "mpd_admin" id="mpd_admin" class="form-control">
+                                                    <input type="password" name = "mpd_admin" id="mpd_admin" class="form-control">
                                                 </div>
                                                 <div class="form-group">
                                                     <label for="email_admin">Email</label>

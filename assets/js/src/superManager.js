@@ -81,17 +81,10 @@
         let formData = new FormData();
         for (let i = 0; i < inputs.length; i++) {
             const element = inputs[i];
-            if(element.name == "communeEntr") {
-                getCommuneIdByName(`/api/communes?commune=${element.value.trim()}`, (res) => {
-                    formData.append('commune_idCommune', res.datas[0].idCommune);
-                    createToDB('/api/entreprises', formData)
-                } )
-                continue;
-            }
-            else {
-                formData.append(element.name, element.value)
-            }
+            formData.append(element.name, element.value)
+            
         }
+        createToDB('/api/entreprises', formData)
         
     }
     const showEntrepriseDetails = (e) => {

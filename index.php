@@ -11,11 +11,15 @@ $router->map('POST','/', 'login');
 $router->map('GET', '/admin-home', 'adminHome');
 $router->map('GET', '/quit', 'quit');
 $router->map('GET', '/Update', 'adminUpdate');
-//Manager
+//routes du manager
 $router->map('GET', '/manager-home', 'superAdmin/home');
 $router->map('GET', '/manager-entreprises', 'superAdmin/manageEntreprises' );
 $router->map('GET', '/manager-plan-comptable-data', 'superAdmin/planComptableitems' );
 
+//routes de l'administrateur
+$router->map('GET', '/identifier-entreprise', 'Comptabilite/comptaEntrepriseIde');
+$router->map('POST', '/identifier-entreprise', 'Comptabilite/comptaEntrepriseIde');
+$router->map('GET', '/manage-users', 'administration/manageUser');
 $router->map('POST', '/Update', 'adminUpdate');
 $router->map('GET', '/update-pass', 'adminUpdatePass');
 $router->map('POST', '/update-pass', 'adminUpdatePass');
@@ -27,8 +31,9 @@ $router->map('POST', '/entreprise-datas', 'adminAjax/entreprisesHandler');
 $router->map('POST', '/user-manager', 'userManager');
 $router->map('GET', '/comptabilite-menu', 'Comptabilite/comptaMenu');
 $router->map('POST', '/comptabilite-menu', 'Comptabilite/comptaMenu');
-$router->map('GET', '/identifier-entreprise', 'Comptabilite/comptaEntrepriseIde');
-$router->map('POST', '/identifier-entreprise', 'Comptabilite/comptaEntrepriseIde');
+$router->map('GET', '/code-analytique', 'Comptabilite/codeAnalytique');
+$router->map('GET', '/liste-mouvement', 'Comptabilite/listesMouvement');//do after
+
 $router->map('GET', '/categorie-journaux', 'Comptabilite/categorieJournaux');
 $router->map('POST', '/categorie-journaux', 'Comptabilite/categorieJournaux');
 $router->map('GET', '/plan-comptable', 'Comptabilite/planComptable');
@@ -77,6 +82,7 @@ $router->map('POST', '/api/entrs', 'api/entrs' );
 $router->map('GET', '/api/communes', 'api/communes' );
 $router->map('GET', '/api/journaux', 'api/journaux' );
 $router->map('POST', '/api/journaux', 'api/journaux' );
+$router->map('GET', '/api/journal', 'api/journal' );
 $router->map('GET', '/api/planComptables', 'api/planComptable' );
 $router->map('POST', '/api/planComptables', 'api/planComptable' );
 $router->map('GET', '/api/mouvements', 'api/mouvements' );
@@ -93,6 +99,13 @@ $router->map('POST', '/api/familles', 'api/familles' );
 $router->map('GET', '/api/UserJournal', 'api/UserJournal' );
 $router->map('GET', '/api/users', 'api/users' );
 $router->map('POST', '/api/users', 'api/users' );
+$router->map('GET', '/api/userSession', 'api/userSession' );
+$router->map('GET', '/api/headerMove', 'api/getHeaderMove' );
+$router->map('GET', '/api/codeAnal', 'api/codeAnal' );
+$router->map('POST', '/api/codeAnal', 'api/codeAnal' );
+
+
+
 
 $match  = $router->match();
 

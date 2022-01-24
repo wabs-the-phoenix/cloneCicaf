@@ -19,7 +19,7 @@ const getApiDatas = (url, callBack) => {
                     }
                 }
                 else {
-                    console.log(res)
+                    console.log(res.type)
                 }
                 
             }
@@ -35,33 +35,33 @@ const getApiDatas = (url, callBack) => {
  */
 const postApiDatas = (url, form, callBack) => {
   const xhr = new XMLHttpRequest();
-  xhr.open('POST', url);
-    xhr.onreadystatechange = () => {
-        if (xhr.readyState == 4) {
-            if (xhr.status == 200) {
-                let res = xhr.responseText;
-                try {
-                    res = JSON.parse(res);
-                    console.log(res)
-                    
-                } catch (error) {
+  xhr.open(`POST`, url);
+  xhr.onreadystatechange = () => {
+      if (xhr.readyState == 4) {
+          if (xhr.status == 200) {
+              let res = xhr.responseText;
+              try {
+                  res = JSON.parse(res);
+                  
+              } catch (error) {
+                console.log(res)
+                console.log(res);
+                  //showUserMessage("Problème interne du Serveur", "Les données ne peuvent être récupérer depuis la base de donnée")
+                  return;
+              }
+              if(res.type === "success") {
+                  if (callBack) {
+                      callBack(res);
+                  }
+              }
+              else {
                   console.log(res)
-                    //showUserMessage("Problème interne du Serveur", "Les données ne peuvent être récupérer depuis la base de donnée")
-                    return;
-                }
-                if(res.type === "success") {
-                    if (callBack) {
-                        callBack(res);
-                    }
-                }
-                else {
-                    console.log(res)
-                }
-                
-            }
-        }
-    }
-    xhr.send(form);
+              }
+              
+          }
+      }
+  }
+  xhr.send(form);
 }
 
 /**

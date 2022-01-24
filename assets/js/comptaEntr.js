@@ -1,7 +1,7 @@
 (function () {
     let pagiEntreprise = 0;
     //#region : usual
-
+    
     const showModal = (modal, modalEl, type, content) => {
         const header = modalEl.querySelector(`.header`);
         if (type === `error`) {

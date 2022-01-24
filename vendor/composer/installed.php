@@ -6,7 +6,7 @@
     'aliases' => 
     array (
     ),
-    'reference' => '11bb7d8b2a01863adc4fa317402fb765972a655f',
+    'reference' => 'e9cf26e147b82ea2ff2bc2b09216b3791eaac523',
     'name' => 'sertek/cicaf',
   ),
   'versions' => 
@@ -20,6 +20,15 @@
       ),
       'reference' => '127f6e96998708a31ef32252985bea82e3b03888',
     ),
+    'dompdf/dompdf' => 
+    array (
+      'pretty_version' => 'v1.1.1',
+      'version' => '1.1.1.0',
+      'aliases' => 
+      array (
+      ),
+      'reference' => 'de4aad040737a89fae2129cdeb0f79c45513128d',
+    ),
     'fortawesome/font-awesome' => 
     array (
       'pretty_version' => '5.15.3',
@@ -29,6 +38,33 @@
       ),
       'reference' => 'd79d85c3fad85ad1885e87ed558f4afd6fce8289',
     ),
+    'phenx/php-font-lib' => 
+    array (
+      'pretty_version' => '0.5.4',
+      'version' => '0.5.4.0',
+      'aliases' => 
+      array (
+      ),
+      'reference' => 'dd448ad1ce34c63d09baccd05415e361300c35b4',
+    ),
+    'phenx/php-svg-lib' => 
+    array (
+      'pretty_version' => '0.3.4',
+      'version' => '0.3.4.0',
+      'aliases' => 
+      array (
+      ),
+      'reference' => 'f627771eb854aa7f45f80add0f23c6c4d67ea0f2',
+    ),
+    'sabberworm/php-css-parser' => 
+    array (
+      'pretty_version' => '8.4.0',
+      'version' => '8.4.0.0',
+      'aliases' => 
+      array (
+      ),
+      'reference' => 'e41d2140031d533348b2192a83f02d8dd8a71d30',
+    ),
     'sertek/cicaf' => 
     array (
       'pretty_version' => 'dev-main',
@@ -36,7 +72,7 @@
       'aliases' => 
       array (
       ),
-      'reference' => '11bb7d8b2a01863adc4fa317402fb765972a655f',
+      'reference' => 'e9cf26e147b82ea2ff2bc2b09216b3791eaac523',
     ),
     'twbs/bootstrap' => 
     array (

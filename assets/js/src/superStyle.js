@@ -45,22 +45,11 @@
     
     //#region : selections
         //#region: navigarion element
-        const dateDay = document.querySelector("#dateDay");
-        const timeEl = document.querySelector("#dateTime");
         //#endregion 
     //#endregion
 
     //#region : on loading
-    let days = ["Dimanche", "Lundi", "Mardi", "Mercredi", "Jeudi", "Vendredi", "Samedi"];
-    let months = ["Janvier", "Février", "Mars", "Avril", "Mai", "Juin", "Juillet", "Août", "Septembre", "Octobre", "Novembre", "Décembre"];
-    setInterval(() => {
-        let day = moment().day();
-        let timeNow = moment().format("YYYY h:mm:ss");
-        let daysInMonth = moment().daysInMonth();
-        let month = moment().month();
-        dateDay.innerHTML = `${days[day]} le ${daysInMonth} ${months[month]} `;
-        timeEl.innerHTML = ` ${timeNow}`;
-    }, 1000);
+   
     let entreprises;
     let activesEntreprises = [];
     let blockedEntreprises = [];

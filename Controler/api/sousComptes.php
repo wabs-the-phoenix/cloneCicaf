@@ -146,7 +146,7 @@ elseif(isset($_POST) && count($_POST) > 0) {
     }
     $response = [
         "type" => "success",
-        "message" => "1 compte principal a été ajouté avec succès ",
+        "message" => "1 sous compte compte  a été ajouté avec succès ",
         "datas" => $newSC
     ];
     echo json_encode($response);

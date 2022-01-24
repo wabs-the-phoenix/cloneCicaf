@@ -1,7 +1,6 @@
 (function() {
     //#region : usual functions
     const displayMoveDetails = (result) => {
-        console.log(result);
         const moveDetails = document.querySelector(`.ui.modal.moveDetails`);
         const content = moveDetails.querySelector(`.content`);
         content.innerHTML = ``;
@@ -153,7 +152,7 @@
                        showExercices(exercicesData);
                        
                    } catch (error) {
-                    console.log(error)
+                    //console.log(error)
                    }
                    
                }
@@ -200,7 +199,7 @@
     const fillCA = () => {
         libeles = document.querySelectorAll('.libele');
         const caFinder = new XMLHttpRequest();
-        caFinder.open('GET', `/codeAnal?value=${codeAnal.value}`)
+        caFinder.open('GET', `/api/codeAnal?value=${codeAnal.value}`)
         caFinder.onreadystatechange = () => {
             if(caFinder.readyState == 4) {
                 if(caFinder.status == 200) {
@@ -438,17 +437,6 @@
         createTableMove(dataToShow);
         
     }
-    const selectLike = (criteres, _datas) => {
-        let trueDatas = [];
-        for(critere in criteres) {
-            for(item in _datas) {
-                if(_datas[item][critere].search(criteres[critere]) > -1) {
-                    trueDatas.push(_datas[item]);
-                }
-            }
-        }
-        return trueDatas;
-    }
     const changeDesignationCompte = (e) => {
         const compteOpe = e.currentTarget;
         const designation =compteOpe.parentElement.nextElementSibling.children[0];
@@ -466,126 +454,6 @@
         }
         
         return actions;
-    }
-    const sortMoveDatas = (e) => {
-        e.preventDefault();
-        const select = e.currentTarget;
-        
-        if (select != null) {
-            showExercices(exercicesData,(dataToShow) => {
-                let value = sortMove.value;
-                switch (value) {
-                    case "date": 
-                      if (sens) {
-                        dataToShow.sort((x,b) => x.DateMouv > b.DateMouv ? -1 : 1);
-                        
-                       }
-                       else {
-                       
-                        dataToShow.sort((x,b) => x.DateMouv < b.DateMouv ? -1 : 1);
-                        console.log(dataToShow)
-                       }
-                        break;
-                    
-                    case "cj": {
-                        if (sens) {
-                         dataToShow.sort((x,b) => {
-                             return x.CategorieJournaux_idCategorieJournaux > b.CategorieJournaux_idCategorieJournaux ? -1 : 1;
-                         });
-                        }
-                        else {
-                         dataToShow.sort((x,b) => {
-                             return x.CategorieJournaux_idCategorieJournaux < b.CategorieJournaux_idCategorieJournaux ? -1 : 1;
-                         });
-                        }
-                         break;
-                     }
-                     case "ca": {
-                        if (sens) {
-                         dataToShow.sort((x,b) => {
-                             return x.T6_CodeAnal > b.T6_CodeAnal ? -1 : 1;
-                         });
-                        }
-                        else {
-                         dataToShow.sort((x,b) => {
-                             return x.T6_CodeAnal < b.T6_CodeAnal ? -1 : 1;
-                         });
-                        }
-                         break;
-                     }
-                    default:
-                            break;
-                }
-                //console.log(dataToShow);
-                return dataToShow;
-            } );
-        }
-    }
-    const sortMoveWithBtn = (e) => {
-        e.preventDefault();
-        const select = e.currentTarget;
-        if (select.id === "sortSens") {
-            sens = sens ? false : true;
-            select.innerHTML = select.innerHTML === `<i class="angle down icon"></i>`? `<i class="angle up icon"></i>` : `<i class="angle down icon"></i>`;
-        }
-        if (select != null) {
-            showExercices(exercicesData,(dataToShow) => {
-                let value = sortMove.value;
-                switch (value) {
-                    case "date": 
-                      if (sens) {
-                        dataToShow.sort((x,b) => x.DateMouv > b.DateMouv ? -1 : 1);
-                        
-                       }
-                       else {
-                       
-                        dataToShow.sort((x,b) => x.DateMouv < b.DateMouv ? -1 : 1);
-                        
-                       }
-                        break;
-                    
-                    case "cj": {
-                        if (sens) {
-                         dataToShow.sort((x,b) => {
-                             return x.CategorieJournaux_idCategorieJournaux > b.CategorieJournaux_idCategorieJournaux ? -1 : 1;
-                         });
-                        }
-                        else {
-                         dataToShow.sort((x,b) => {
-                             return x.CategorieJournaux_idCategorieJournaux < b.CategorieJournaux_idCategorieJournaux ? -1 : 1;
-                         });
-                        }
-                         break;
-                     }
-                     case "ca": {
-                        if (sens) {
-                         dataToShow.sort((x,b) => {
-                             return x.T6_CodeAnal > b.T6_CodeAnal ? -1 : 1;
-                         });
-                        }
-                        else {
-                         dataToShow.sort((x,b) => {
-                             return x.T6_CodeAnal < b.T6_CodeAnal ? -1 : 1;
-                         });
-                        }
-                         break;
-                     }
-                    default:
-                        if (sens) {
-                            dataToShow.sort((x,b) => x.DateMouv > b.DateMouv ? -1 : 1);
-                            
-                           }
-                           else {
-                           
-                            dataToShow.sort((x,b) => x.DateMouv < b.DateMouv ? -1 : 1);
-                           }
-                        break;
-                }
-                //console.log(dataToShow);
-                return dataToShow;
-            } );
-        }
-        
     }
     const selectMoveOfYear = (e) => {
         e.preventDefault();
@@ -636,8 +504,8 @@
     const radios = deviseChoice.querySelectorAll('input[type="radio"]');
     const allTaux = document.querySelectorAll('.taux');
     const passedMovesList = document.querySelector('#passedMoveList');
-    const exercice = chooseExercice.querySelector('input');
-    const journal = chooseExercice.querySelector('select');
+    //const exercice = chooseExercice.querySelector('input');
+    //const journal = chooseExercice.querySelector('select');
     let compteOperations = document.querySelectorAll('.compteOperationCell input');
     const seeMoveBtn = document.querySelector('#seeMoveBtn');
     const prevMove = document.querySelector('#prevMove');
@@ -663,7 +531,7 @@
     //#endregion
     //#region : Chargement Des numero d'entetes
     const ajax = new XMLHttpRequest();
-    ajax.open("GET", "/headerMove");
+    ajax.open("GET", "/api/headerMove");
     ajax.onreadystatechange = () => {
         if(ajax.readyState == 4) {
             if(ajax.status == 200) {
@@ -673,12 +541,19 @@
         }
     }
     ajax.send();
+    jQuery(function($) {
+        //initiate dataTables plugin
+        var myTable = 
+        $('#passedMoveList')
+        //.wrap("<div class='dataTables_borderWrap' />")   //if you are applying horizontal scrolling (sScrollX)
+        .DataTable();
+    });
     //#endregion
     //#endregion
     //#region : set default exercice
      let anneeActuelle = moment().format('YYYY');
-     exercice.max = anneeActuelle;
-     exercice.value = anneeActuelle;
+     //exercice.max = anneeActuelle;
+     //exercice.value = anneeActuelle;
     //#endregion
     //#region : recuperations du code analytique
     
@@ -725,7 +600,7 @@
     //#endregion
     //#region afficher tous les mouvements passer
     //afficher tous les mouvements passer
-   showMoveList();
+   //showMoveList();
     //#endregion
     //#region : autocmpletion
     const inputsToComplete = document.querySelectorAll(".toComplete");
@@ -749,9 +624,9 @@
         });
         
     }
-    chooseExercice.addEventListener('submit', (e) => {
-        e.preventDefault();
-    });
+    // chooseExercice.addEventListener('submit', (e) => {
+    //     e.preventDefault();
+    // });
     //ajouter un nouveau mouvement
     addTransac.addEventListener('click', addNewMove);
     deviseChoice.addEventListener('submit', (e) => {
@@ -779,33 +654,33 @@
         element.addEventListener('keydown', checkNumericValue);
         
     }
-    exercice.addEventListener('change', selectMoveOfYear);
-    journal.addEventListener(`change`, selectMoveByJournal)
+    //exercice.addEventListener('change', selectMoveOfYear);
+    //journal.addEventListener(`change`, selectMoveByJournal)
     for (let k = 0; k < compteOperations.length; k++) {
         const element = compteOperations[k];
         element.addEventListener('blur', changeDesignationCompte)
     }
     seeMoveBtn.addEventListener('click', backToMovesList);
-    prevMove.addEventListener('click', (e) => {
-        if (pageActuelle != 1) {
-            pageActuelle--;
-            showExercices(exercicesData);
-        }
-        e.preventDefault;
-    })
-    nextMove.addEventListener('click', (e) => {
-        if (pageActuelle != nombreDePage) {
-            pageActuelle++;
-            showExercices(exercicesData);
-        }
-    })
+    // prevMove.addEventListener('click', (e) => {
+    //     if (pageActuelle != 1) {
+    //         pageActuelle--;
+    //         showExercices(exercicesData);
+    //     }
+    //     e.preventDefault;
+    // })
+    // nextMove.addEventListener('click', (e) => {
+    //     if (pageActuelle != nombreDePage) {
+    //         pageActuelle++;
+    //         showExercices(exercicesData);
+    //     }
+    // })
     //fermer la boite donnat les details d'u mouvemet
     closeDetail.addEventListener(`click`, (e) => {
         e.preventDefault();
         $(`.ui.modal.moveDetails`).modal(`toggle`);
     })
-    sortMove.addEventListener(`change`, sortMoveDatas)
-    sortSens.addEventListener(`click`, sortMoveWithBtn)
+    // sortMove.addEventListener(`change`, sortMoveDatas)
+    // sortSens.addEventListener(`click`, sortMoveWithBtn)
     //#endregion
     //#region : remplissage du code journal
     
